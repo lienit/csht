@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="head">
+        <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    </div>
+    <nav class="navbar navbar-fixed-top navbar-inverse" th:fragment="nav-home">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">校易</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">首页</li>
+                    <li><a href="#about">出售信息</a></li>
+                    <li><a href="#contact">求购信息</a></li>
+
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的闲置 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">出售中</a></li>
+                                <li><a href="#">已卖出</a></li>
+                                <li><a href="#">我的关注</a></li>
+
+
+                            </ul>
+                        </li>
+<!--                        <div th:if="${user.username}!=null">-->
+<!--                            <li class="dropdown">-->
+<!--                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" th:text="${user.username}" aria-expanded="false"><span class="caret"></span></a>-->
+<!--                                <ul class="dropdown-menu">-->
+<!--                                    <li><a href="#">账号管理</a></li>-->
+<!--                                    <li><a href="#">消息</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
+<!--                        </div>-->
+                        <li class="active"><a th:href="@{/login}"/> 登录 <span class="sr-only">(current)</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">联系我们<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">出售中</a></li>
+                                <li><a href="#">已卖出</a></li>
+                                <li><a href="#">我的关注</a></li>
+
+                            </ul>
+                        </li>
+
+
+                    </c:if>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" th:fragment="nav-login">
+        <div class="container">
+
+        </div>
+    </nav>
+</body>
+</html>

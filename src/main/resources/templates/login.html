@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <th:block th:include="/include/bootstrap :: head"></th:block>
+    <link th:href="@{/css/signin.css}" rel="stylesheet"/>
+</head>
+<body>
+    <th:block th:replace="/include/bootstrap :: nav-login"></th:block>
+
+    <div class="format">
+        <div class="container" >
+            <form class="form-signin" method="post" action="/isLogin">
+                <h2 class="form-signin-heading">用户登录</h2>
+                <div>
+                    <label  class="sr-only">用户名 ：</label>
+                    <input type="text" name="username" class="form-control" placeholder="准考证号" required autofocus />
+                </div>
+                <div>
+                    <label  class="sr-only">密码 ：</label>
+                    <input type="password"  class="form-control" name="psw" placeholder="身份证后六位" required />
+                </div>
+                <div >
+                    <span  class="control" th:text="${msg}"></span>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block" id="btn1" type="submit">登录</button>
+                <div class="nav-divider">
+                    <a>
+                        <span>忘记密码</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

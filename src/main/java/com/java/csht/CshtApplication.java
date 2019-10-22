@@ -1,0 +1,15 @@
+package com.java.csht;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@MapperScan(basePackages = "com.java.csht.mapper")
+public class CshtApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CshtApplication.class, args);
+    }
+
+}
