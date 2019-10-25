@@ -2,191 +2,177 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>用户信息管理</title>
-    <th:block th:include="/include/bootstrap :: head"></th:block>
-    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <title>账号管理</title>
+    <th:block th:include="/include/bootstrap ::head"></th:block>
+    <link rel="stylesheet" href="css/userInfo.css">
+    <style>
+
+        .text-explain{
+            /*overflow: hidden;*/
+            /*text-overflow: ellipsis;*/
+            display:flex;
+            flex-wrap:wrap;
+            -direction:row;
+        }
+    </style>
 </head>
 <body>
-    <th:block th:replace="/include/bootstrap :: nav-userInfo"></th:block>
+    <th:block th:replace="include/bootstrap :: nav-userInfo"></th:block>
+    <th:block th:replace="include/bootstrap :: userinfo-menu"></th:block>
+    <div class="col-xs-12 col-sm-8 " >
+        <div class="panel panel-default">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
-                <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Reports</a></li>
-                    <li><a href="#">Analytics</a></li>
-                    <li><a href="#">Export</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li><a href="">Nav item</a></li>
-                    <li><a href="">Nav item again</a></li>
-                    <li><a href="">One more nav</a></li>
-                    <li><a href="">Another nav item</a></li>
-                    <li><a href="">More navigation</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li><a href="">Nav item again</a></li>
-                    <li><a href="">One more nav</a></li>
-                    <li><a href="">Another nav item</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">Dashboard</h1>
+                    <div class="row placeholders" >
+                        <div class="col-md-5 col-md-offset-1">
+                            <h4>您的基础信息</h4>
+                        </div>
+                        <div style="text-align: left;" class="col-md-8 col-md-offset-3">
+                            <span >会员名:   </span>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            <span >[[${user.username}]]</span>
+                            <br>
+                            <span>绑定邮箱:</span>
+                            &nbsp;
+                            <span >[[${user.mailbox}]]</span>
+                            <br>
+                            <span>绑定手机:</span>
+                            &nbsp;
+                            <span >[[${user.mobile}]] </span>
 
-                <div class="row placeholders">
-                    <div class="col-xs-6 col-sm-3 placeholder">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-                        <h4>Label</h4>
-                        <span class="text-muted">Something else</span>
-                    </div>
-                    <div class="col-xs-6 col-sm-3 placeholder">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-                        <h4>Label</h4>
-                        <span class="text-muted">Something else</span>
-                    </div>
-                    <div class="col-xs-6 col-sm-3 placeholder">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-                        <h4>Label</h4>
-                        <span class="text-muted">Something else</span>
-                    </div>
-                    <div class="col-xs-6 col-sm-3 placeholder">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-                        <h4>Label</h4>
-                        <span class="text-muted">Something else</span>
-                    </div>
-                </div>
+                        </div>
 
-                <h2 class="sub-header">Section title</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1,001</td>
-                            <td>Lorem</td>
-                            <td>ipsum</td>
-                            <td>dolor</td>
-                            <td>sit</td>
-                        </tr>
-                        <tr>
-                            <td>1,002</td>
-                            <td>amet</td>
-                            <td>consectetur</td>
-                            <td>adipiscing</td>
-                            <td>elit</td>
-                        </tr>
-                        <tr>
-                            <td>1,003</td>
-                            <td>Integer</td>
-                            <td>nec</td>
-                            <td>odio</td>
-                            <td>Praesent</td>
-                        </tr>
-                        <tr>
-                            <td>1,003</td>
-                            <td>libero</td>
-                            <td>Sed</td>
-                            <td>cursus</td>
-                            <td>ante</td>
-                        </tr>
-                        <tr>
-                            <td>1,004</td>
-                            <td>dapibus</td>
-                            <td>diam</td>
-                            <td>Sed</td>
-                            <td>nisi</td>
-                        </tr>
-                        <tr>
-                            <td>1,005</td>
-                            <td>Nulla</td>
-                            <td>quis</td>
-                            <td>sem</td>
-                            <td>at</td>
-                        </tr>
-                        <tr>
-                            <td>1,006</td>
-                            <td>nibh</td>
-                            <td>elementum</td>
-                            <td>imperdiet</td>
-                            <td>Duis</td>
-                        </tr>
-                        <tr>
-                            <td>1,007</td>
-                            <td>sagittis</td>
-                            <td>ipsum</td>
-                            <td>Praesent</td>
-                            <td>mauris</td>
-                        </tr>
-                        <tr>
-                            <td>1,008</td>
-                            <td>Fusce</td>
-                            <td>nec</td>
-                            <td>tellus</td>
-                            <td>sed</td>
-                        </tr>
-                        <tr>
-                            <td>1,009</td>
-                            <td>augue</td>
-                            <td>semper</td>
-                            <td>porta</td>
-                            <td>Mauris</td>
-                        </tr>
-                        <tr>
-                            <td>1,010</td>
-                            <td>massa</td>
-                            <td>Vestibulum</td>
-                            <td>lacinia</td>
-                            <td>arcu</td>
-                        </tr>
-                        <tr>
-                            <td>1,011</td>
-                            <td>eget</td>
-                            <td>nulla</td>
-                            <td>Class</td>
-                            <td>aptent</td>
-                        </tr>
-                        <tr>
-                            <td>1,012</td>
-                            <td>taciti</td>
-                            <td>sociosqu</td>
-                            <td>ad</td>
-                            <td>litora</td>
-                        </tr>
-                        <tr>
-                            <td>1,013</td>
-                            <td>torquent</td>
-                            <td>per</td>
-                            <td>conubia</td>
-                            <td>nostra</td>
-                        </tr>
-                        <tr>
-                            <td>1,014</td>
-                            <td>per</td>
-                            <td>inceptos</td>
-                            <td>himenaeos</td>
-                            <td>Curabitur</td>
-                        </tr>
-                        <tr>
-                            <td>1,015</td>
-                            <td>sodales</td>
-                            <td>ligula</td>
-                            <td>in</td>
-                            <td>libero</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <!--                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color="#6f5499" size="3" />-->
+                        <div class="col-md-5 col-md-offset-1" style="margin-top: 20px">
+                            <h4>您的安全服务</h4>
+
+                        </div>
+                        <div class="col-md-9 col-md-offset-3" style="margin-top: 20px;width: 500px;">
+                            <p id="security" style="">
+                                安全等级：
+                            </p>
+                            <div class="progress">
+                                <div class="progress progress-striped active">
+                                    <div class="progress-bar progress-bar-danger" id="progress bar" role="progressbar"
+                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 0%;">
+                                        <span class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-md-offset-3" style="padding-top: 20px;">
+                            <div id="moblie" th:value="${user.mobile}">
+
+                                <div class="text-explain" th:if="${user.mobile}==''">
+                                    <span id="mobile" class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未绑定</span>
+                                    <span style="padding-left: 50px">绑定手机</span>
+                                    <span class="text-explain"  style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                    绑定手机后，您即可享受丰富的手<br>
+                                                    机服务，如手机找回密码等。
+                                                </span>
+                                    <a  th:href="@{/bindmobile(userId=${user.id})}" style="padding-left: 50px">设置</a>
+                                </div>
+
+
+
+                                <div class="text-explain" th:if="${user.mobile}!=''">
+                                    <span  class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                    <span style="padding-left: 50px">绑定手机</span>
+                                    <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                    绑定手机后，您即可享受丰富的手<br>
+                                                    机服务，如手机找回密码等。
+                                                </span>
+                                    <a  th:href="@{/bindmobile(userId=${user.id})}" style="padding-left: 50px">修改</a>
+                                </div>
+                            </div>
+
+                            <div  style="margin-top: 50px" >
+
+                                <div class="text-explain" th:if="${user.psw}==''">
+                                    <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未设置</span>
+                                    <span style="padding-left: 50px">登录密码</span>
+                                    <span class="text-explain" style=" padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                    安全性高的密码可以使账号更安<br/>
+                                                    全。建议您定期更换密码，且设置<br/>
+                                                    一个包含数字和字母，并长度超过<br/>
+                                                    6位以上的密码。
+                                                    </span>
+                                    <a  href="#" style="padding-left: 50px">设置</a>
+                                </div>
+                                <div class="text-explain" th:if="${user.psw}!=''">
+                                    <span class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                    <span style="padding-left: 50px">登录密码</span>
+                                    <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                    安全性高的密码可以使账号更安<br/>
+                                                    全。建议您定期更换密码，且设置<br/>
+                                                    一个包含数字和字母，并长度超过<br/>
+                                                    6位以上的密码。
+                                                    </span>
+                                    <a href="#" style="padding-left: 50px">修改</a>
+                                </div>
+
+                            </div>
+                            <div  style="margin-top: 50px">
+
+                                <div class="text-explain" th:if="${user.mailbox}==''">
+                                    <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未绑定</span>
+                                    <span style="padding-left: 50px">绑定邮箱</span>
+                                    <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                        是您找回登录密码的方式之一。建<br/>
+                                                        议您设置一个常用的邮箱，以便到<br/>
+                                                        时候可以通过邮箱找回密码
+                                                    </span>
+                                    <a  href="#" style="padding-left: 50px">设置</a>
+                                </div>
+
+
+                                <div class="text-explain" th:if="${user.mailbox}!=''">
+                                    <span class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                    <span style="padding-left: 50px">绑定邮箱</span>
+                                    <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                        是您找回登录密码的方式之一。建<br/>
+                                                        议您设置一个常用的邮箱，以便到<br/>
+                                                        时候可以通过邮箱找回密码
+                                                </span>
+                                    <a href="#" style="padding-left: 50px">修改</a>
+
+                                </div>
+
+                            </div>
+                            <input type="hidden" th:value="${count}" id="count">
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+    <script>
+        window.onload = function () {
+            var count = document.getElementById("count").value;
+            var progress =  document.getElementById("progress bar");
+            var security =  document.getElementById("security");
+            if (count==1){
+                progress.style.width = "33%";
+                security.innerText= "安全等级：低";
+            }
+            if (count==2){
+                progress.style.width = "66%";
+                progress.className  = "progress-bar progress-bar-warning";
+                security.innerText= "安全等级：中";
+            }
+            if (count==3){
+                progress.style.width = "100%";
+                progress.className  = "progress-bar progress-bar-success";
+                security.innerText= "安全等级：高";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -31,7 +31,7 @@
 		<!-- 定义保存的文件名 -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--%d{yyyy-MM-dd}代表每天生成一个新的日志-->
-			<fileNamePattern>${LOG_HOME}/mysprintboot_%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${LOG_HOME}/csht_%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!--日志最多保存90天，也就是90份-->
 			<maxHistory>90</maxHistory>
 		</rollingPolicy>

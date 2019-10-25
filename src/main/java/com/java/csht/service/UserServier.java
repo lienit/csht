@@ -26,4 +26,19 @@ public class UserServier {
         }
         return resultStr;
     }
+
+    public User findByUserName(User user){
+        User byUserName = userMapper.findByUserName(user);
+        return byUserName;
+    }
+
+    public Boolean UpdateMobileByPsw(String mobile, String psw){
+        boolean b = userMapper.updatetMobileBypPsw(mobile, psw);
+        return b;
+    }
+
+    public User findById(String id){
+        User byId = userMapper.findById(id);
+        return byId;
+    }
 }

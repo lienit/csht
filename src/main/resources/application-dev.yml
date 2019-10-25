@@ -61,3 +61,6 @@ spring:
             exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+#    开启驼峰命名
+    map-underscore-to-camel-case: true

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <th:block th:include="/include/bootstrap :: head"></th:block>
-    <link th:href="@{}" rel="stylesheet"/>
+    <link th:href="@{/css/userLogin.css}" rel="stylesheet"/>
 </head>
 <body>
     <th:block th:replace="/include/bootstrap :: nav-login"></th:block>
@@ -15,11 +15,11 @@
                 <h2 class="form-signin-heading">用户登录</h2>
                 <div>
                     <label  class="sr-only">用户名 ：</label>
-                    <input type="text" name="username" class="form-control" placeholder="准考证号" required autofocus />
+                    <input type="text" name="username" class="form-control" placeholder="请输入用户名" required autofocus />
                 </div>
                 <div>
                     <label  class="sr-only">密码 ：</label>
-                    <input type="password"  class="form-control" name="psw" placeholder="身份证后六位" required />
+                    <input type="password"  class="form-control" name="psw" placeholder="请输入密码" required />
                 </div>
                 <div >
                     <span  class="control" th:text="${msg}"></span>

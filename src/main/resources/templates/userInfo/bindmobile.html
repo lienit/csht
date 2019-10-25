@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改绑定手机</title>
+    <th:block th:include="include/bootstrap :: head"></th:block>
+    <link rel="stylesheet" href="css/userInfo.css">
+    <script>
+        $(function() {
+            $('#btn1').click(function () {
+                $.ajax({
+                    url:"/bindnewmobile",
+                    type:"post",
+                    dataType:"text",
+                    data:{
+                        'mobile':$("input[name=mobile]").val(),
+                        'psw':$("input[name=psw]").val()
+                    },
+                    success:function (json) {
+                        if (json=="success"){
+                            $('#nullMobile').hide();
+                            $('#win').show();
+                            var text = $('#span1').text();
+                            var time = window.setInterval(function () {
+                                if (text==2){
+                                    window.clearInterval(time);
+                                    window.location.replace("/userinfo");
+                                }
+                                text--;
+                                $('#span1').html(text);
+                                $('#btn3').html("成功（"+text+"）");
+                            },1000);
+                            $('#btn3').click(function () {
+                                window.location.replace("/userinfo");
+                            });
+                        }else {
+                            $('#mistake').show();
+                        }
+
+                    },
+                    error: function () {
+                        alert("数据错误！");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <th:block th:replace="include/bootstrap :: nav-userInfo"></th:block>
+    <th:block th:replace="include/bootstrap :: userinfo-menu"></th:block>
+    <div class="col-xs-12 col-sm-8 " >
+        <div class="panel panel-default">
+            <div class="panel-body" >
+                <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+                    <div class="row placeholders" >
+                        <div class="col-md-5 col-md-offset-1" style="">
+                            <div>
+                                <label style="color: gray" >
+                                    位置： 账号管理 > 安全中心 > 绑定手机号
+                                </label>
+                            </div>
+
+                            <div th:if="${state}?false:true" id="nullMobile">
+                                <div style="margin-top: 100px" >
+                                    <label style="color: gray" >
+                                        请输入要绑定的手机：
+                                    </label>
+                                </div>
+                                <div style="margin-top: 50px;margin-left: 250px;color: gray" th:if="${state}?false:true">
+
+                                    <form style="width: 300px">
+                                        <div>
+                                            <label  >绑定手机号：</label>
+                                            <input type="text" name="mobile" class="form-control" placeholder="请输入需要绑定的手机号" required autofocus />
+                                        </div>
+                                        <br/>
+                                        <div>
+                                            <label  >密码验证 ：</label>
+                                            <input type="password" name="psw"  class="form-control" placeholder="请输入密码，进行验证" required autofocus />
+                                        </div>
+                                        <div id="mistake" style="height: 40px;margin-top: 10px;display: none" class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <span >数据错误！</span>
+                                        </div>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btn1" class="btn btn-sm btn-primary " type="button">确认</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="win" style="display: none;width: 300px;height: 300px;padding-left: 150px;padding-top: 50px">
+                                <label style="white-space: nowrap">
+                                    绑定成功！<br/>
+                                    <span id="span1">10</span>
+                                    秒后跳转安全设置，亦可点击按钮跳转
+                                </label>
+                                <a style="" id="btn3" type="button" class="btn btn-lg btn-success">成功按钮(10)</a>
+                            </div>
+
+                            <div th:if="${state}?true:false" id="editMobile">
+                                <div style="margin-top: 100px" th:if="${state}?true:false">
+                                    <label style="color: gray" >
+                                        请输入要绑定的新手机：
+                                    </label>
+                                </div>
+                                <div style="margin-top: 50px;margin-left: 250px;color: gray" th:if="${state}?true:false">
+
+                                    <form style="width: 300px">
+                                        <div>
+                                            <label  >新绑定手机：</label>
+                                            <input type="text" name="mobile" class="form-control" placeholder="请输入需要绑定的手机号" required autofocus />
+                                        </div>
+                                        <br/>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="请输入验证码" required>
+                                            <span class="input-group-btn">
+						                    <button class="btn btn-info" type="button">
+							                 验证码
+						                    </button>
+					                    </span>
+                                        </div><!-- /input-group -->
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btn2" class="btn btn-sm btn-primary " type="button">确认</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

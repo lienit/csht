@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息管理</title>
+    <th:block th:include="/include/bootstrap :: head"></th:block>
+    <link href="/css/dashboard.css" th:rel="stylesheet"/>
+    <style>
+        .text-explain{
+            /*overflow: hidden;*/
+            /*text-overflow: ellipsis;*/
+            display:flex;
+            flex-wrap:wrap;
+            -direction:row;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="/include/bootstrap :: nav-userInfo"></th:block>
+    <th:block th:replace="/include/bootstrap :: userinfo"></th:block>
+            <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+
+
+                    <div class="row placeholders" >
+                        <div class="col-md-5 col-md-offset-1">
+                            <h4>您的基础信息</h4>
+                        </div>
+                        <div style="text-align: left;" class="col-md-8 col-md-offset-3">
+                                <span >会员名:   </span>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                <span >[[${user.username}]]</span>
+                                <br>
+                                <span>绑定邮箱:</span>
+                                &nbsp;
+                                <span >[[${user.mailbox}]]</span>
+                                <br>
+                                <span>绑定手机:</span>
+                                &nbsp;
+                                <span >[[${user.mobile}]] </span>
+
+                        </div>
+
+<!--                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color="#6f5499" size="3" />-->
+                        <div class="col-md-5 col-md-offset-1" style="margin-top: 20px">
+                            <h4>您的安全服务</h4>
+
+                        </div>
+                        <div class="col-md-9 col-md-offset-3" style="margin-top: 20px;width: 500px;">
+                            <p id="security" style="margin-left: -385px;">
+                                安全等级：
+                            </p>
+                            <div class="progress">
+                                <div class="progress progress-striped active">
+                                    <div class="progress-bar progress-bar-danger" id="progress bar" role="progressbar"
+                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 0%;">
+                                        <span class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-md-offset-3" style="padding-top: 20px">
+                                <div id="moblie" th:value="${user.mobile}">
+
+                                    <div class="text-explain" th:if="${user.mobile}==''">
+                                        <span id="mobile" class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未绑定</span>
+                                        <span style="padding-left: 50px">绑定手机</span>
+                                        <span class="text-explain"  style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                            绑定手机后，您即可享受丰富的手<br>
+                                            机服务，如手机找回密码等。
+                                        </span>
+                                        <a  th:href="@{/bindmobile(state=0)}" style="padding-left: 50px">设置</a>
+                                    </div>
+
+
+
+                                    <div class="text-explain" th:if="${user.mobile}!=''">
+                                        <span  class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                        <span style="padding-left: 50px">绑定手机</span>
+                                        <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                            绑定手机后，您即可享受丰富的手<br>
+                                            机服务，如手机找回密码等。
+                                        </span>
+                                        <a  href="#" style="padding-left: 50px">修改</a>
+                                    </div>
+                                </div>
+
+                                <div  style="margin-top: 50px" >
+
+                                        <div class="text-explain" th:if="${user.psw}==''">
+                                            <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未设置</span>
+                                            <span style="padding-left: 50px">登录密码</span>
+                                            <span class="text-explain" style=" padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                            安全性高的密码可以使账号更安<br/>
+                                            全。建议您定期更换密码，且设置<br/>
+                                            一个包含数字和字母，并长度超过<br/>
+                                            6位以上的密码。
+                                            </span>
+                                            <a  href="#" style="padding-left: 50px">设置</a>
+                                        </div>
+                                        <div class="text-explain" th:if="${user.psw}!=''">
+                                            <span class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                            <span style="padding-left: 50px">登录密码</span>
+                                            <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                            安全性高的密码可以使账号更安<br/>
+                                            全。建议您定期更换密码，且设置<br/>
+                                            一个包含数字和字母，并长度超过<br/>
+                                            6位以上的密码。
+                                            </span>
+                                            <a href="#" style="padding-left: 50px">修改</a>
+                                        </div>
+
+                                </div>
+                                <div  style="margin-top: 50px">
+
+                                        <div class="text-explain" th:if="${user.mailbox}==''">
+                                            <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未绑定</span>
+                                            <span style="padding-left: 50px">绑定邮箱</span>
+                                            <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                是您找回登录密码的方式之一。建<br/>
+                                                议您设置一个常用的邮箱，以便到<br/>
+                                                时候可以通过邮箱找回密码
+                                            </span>
+                                            <a  href="#" style="padding-left: 50px">设置</a>
+                                        </div>
+
+
+                                       <div class="text-explain" th:if="${user.mailbox}!=''">
+                                           <span class="glyphicon glyphicon-ok" style="color: rgb(0, 214, 0); font-size: 17px;"> 已完成</span>
+                                           <span style="padding-left: 50px">绑定邮箱</span>
+                                           <span class="text-explain" style="padding-left: 20px; font-size: 10px; white-space: nowrap">
+                                                是您找回登录密码的方式之一。建<br/>
+                                                议您设置一个常用的邮箱，以便到<br/>
+                                                时候可以通过邮箱找回密码
+                                        </span>
+                                           <a href="#" style="padding-left: 50px">修改</a>
+
+                                       </div>
+
+                                </div>
+                            <input type="hidden" th:value="${count}" id="count">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            var count = document.getElementById("count").value;
+            var progress =  document.getElementById("progress bar");
+            var security =  document.getElementById("security");
+            if (count==1){
+                progress.style.width = "33%";
+                security.innerText= "安全等级：低";
+            }
+            if (count==2){
+                progress.style.width = "66%";
+                progress.className  = "progress-bar progress-bar-warning";
+                security.innerText= "安全等级：中";
+            }
+            if (count==3){
+                progress.style.width = "100%";
+                progress.className  = "progress-bar progress-bar-success";
+                security.innerText= "安全等级：高";
+            }
+        }
+    </script>
+</body>
+</html>
