@@ -33,3 +33,5 @@ footer {
     min-width: 100%;
     height: 500px;
 }
+
+a:hover {text-decoration: none;}

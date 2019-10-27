@@ -6,33 +6,26 @@
     <th:block th:include="include/bootstrap :: head"></th:block>
     <link rel="stylesheet" href="css/userInfo.css">
     <script>
+       // 未绑定手机
         $(function() {
-            $('#btn1').click(function () {
+            $('#btnnew').click(function () {
                 $.ajax({
                     url:"/bindnewmobile",
                     type:"post",
                     dataType:"text",
                     data:{
                         'mobile':$("input[name=mobile]").val(),
-                        'psw':$("input[name=psw]").val()
+                        'psw':$("input[name=psw]").val(),
+                        'userId':$('#userId').val()
                     },
                     success:function (json) {
                         if (json=="success"){
                             $('#nullMobile').hide();
                             $('#win').show();
-                            var text = $('#span1').text();
-                            var time = window.setInterval(function () {
-                                if (text==2){
-                                    window.clearInterval(time);
-                                    window.location.replace("/userinfo");
-                                }
-                                text--;
-                                $('#span1').html(text);
-                                $('#btn3').html("成功（"+text+"）");
-                            },1000);
-                            $('#btn3').click(function () {
-                                window.location.replace("/userinfo");
-                            });
+                            win();
+                            $('#step-new1').css("color","gray");
+                            $('#step-new2').css("color","crimson");
+
                         }else {
                             $('#mistake').show();
                         }
@@ -44,6 +37,76 @@
                 });
             });
         });
+
+    //    绑定手机
+        $(function () {
+            $('#btnEdit1').click(function () {
+                $.ajax({
+                    url:"/editbindmobileiolp",
+                    type:"post",
+                    dataType:"text",
+                    data:{
+                        'mobile':$("input[name=newmobile]").val(),
+                        'verify':$("input[name=verify]").val(),
+                        'userId':$('#userId').val()
+                    },
+                    success:function (json) {
+                        if (json=="success"){
+                            $('#editMobile').hide();
+                            $('#verymobile').show();
+                            $('#step-edit1').css("color","gray");
+                            $('#step-edit2').css("color","crimson");
+                        }
+                    },
+                    error:function () {
+                        
+                    }
+                });
+            });
+        });
+
+       $(function () {
+           $('#btnEdit2').click(function () {
+               $.ajax({
+                   url:"/editbindmobileiolp",
+                   type:"post",
+                   dataType:"text",
+                   data:{
+                       'mobile':$("input[name=rawmobile]").val(),
+                       'verify':$("input[name=verify]").val(),
+                       'userId':$('#userId').val()
+                   },
+                   success:function (json) {
+                       if (json=="success"){
+                           $('#verymobile').hide();
+                           $("#win").show();
+                           win();
+                           $('#step-edit2').css("color","gray");
+                           $('#step-edit3').css("color","crimson");
+                       }
+                   },
+                   error:function () {
+
+                   }
+               });
+           });
+       });
+    //绑定成功十秒后跳转页面
+        function win() {
+            var text = $('#span1').text();
+            var time = window.setInterval(function () {
+                if (text==2){
+                    window.clearInterval(time);
+                    window.location.replace("/userinfo");
+                }
+                text--;
+                $('#span1').html(text);
+                $('#btnwin').html("成功（"+text+"）");
+            },1000);
+            $('#btnwin').click(function () {
+                window.location.replace("/userinfo");
+            });
+        }
     </script>
 </head>
 <body>
@@ -54,18 +117,53 @@
             <div class="panel-body" >
                 <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
                     <div class="row placeholders" >
-                        <div class="col-md-5 col-md-offset-1" style="">
+                        <div class="col-md-5 col-md-offset-1" style="color: gray">
                             <div>
-                                <label style="color: gray" >
-                                    位置： 账号管理 > 安全中心 > 绑定手机号
+                                <label style="" >
+                                    位置： 账号管理 >
+                                    <a th:href="@{/userinfo}" style="color: gray">安全中心</a>
+                                    > 绑定手机号
+                                </label>
+                                <label style="margin-top:70px;margin-left: 250px;width: 300px;opacity:0.7" th:if="${state}?false:true">
+                                    <span>········</span>
+                                    <span id="step-new1" style="color:crimson">1.绑定手机</span>
+                                    <span>
+                                        ····
+                                        <span  class="glyphicon glyphicon-chevron-right" style="color: rgb(96, 96, 96);"></span>
+                                        ····
+                                    </span>
+                                    <span id="step-new2">2.完成</span>
+                                    <span>········</span>
+                                </label>
+
+                                <label style="margin-top:70px;margin-left: 150px;width: 300px;opacity:0.7;white-space: nowrap" th:if="${state}?true:false">
+                                    <span>········</span>
+                                    <span id="step-edit1" style="color:crimson">1.绑定新手机</span>
+                                    <span>
+                                        ····
+                                        <span  class="glyphicon glyphicon-chevron-right" style="color: rgb(96, 96, 96);"></span>
+                                        ····
+                                    </span>
+                                    <span id="step-edit2">2.验证原手机</span>
+                                    <span>
+                                        ····
+                                        <span  class="glyphicon glyphicon-chevron-right" style="color: rgb(96, 96, 96);"></span>
+                                        ····
+                                    </span>
+                                    <span id="step-edit3">3.完成</span>
                                 </label>
                             </div>
 
+
+
+                            <input type="hidden" th:value="${userId}" id="userId">
+
                             <div th:if="${state}?false:true" id="nullMobile">
-                                <div style="margin-top: 100px" >
+                                <div style="margin-top: 50px" >
                                     <label style="color: gray" >
                                         请输入要绑定的手机：
                                     </label>
+
                                 </div>
                                 <div style="margin-top: 50px;margin-left: 250px;color: gray" th:if="${state}?false:true">
 
@@ -86,17 +184,26 @@
                                             </button>
                                             <span >数据错误！</span>
                                         </div>
-                                        <button style="margin-top: 30px;margin-left: 125px" id="btn1" class="btn btn-sm btn-primary " type="button">确认</button>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnnew" class="btn btn-sm btn-primary " type="button">确认</button>
                                     </form>
                                 </div>
                             </div>
-                            <div id="win" style="display: none;width: 300px;height: 300px;padding-left: 150px;padding-top: 50px">
-                                <label style="white-space: nowrap">
-                                    绑定成功！<br/>
+
+
+                            <div id="win" style="display: none;width: 300px;height: 300px;padding-left: 230px;padding-top: 50px">
+                                <div style="margin-bottom: 65px;margin-left: -230px" >
+                                    <label style="color: gray" >
+                                        设置成功：
+                                    </label>
+
+                                </div>
+
+                                <label style="white-space: nowrap; margin-bottom: 30px;">
+                                    <span style="margin-left: 100px">绑定成功！</span><br/>
                                     <span id="span1">10</span>
                                     秒后跳转安全设置，亦可点击按钮跳转
                                 </label>
-                                <a style="" id="btn3" type="button" class="btn btn-lg btn-success">成功按钮(10)</a>
+                                <a style="margin-left: 75px" id="btnwin" type="button" class="btn btn-lg btn-success">成功(10)</a>
                             </div>
 
                             <div th:if="${state}?true:false" id="editMobile">
@@ -110,26 +217,60 @@
                                     <form style="width: 300px">
                                         <div>
                                             <label  >新绑定手机：</label>
-                                            <input type="text" name="mobile" class="form-control" placeholder="请输入需要绑定的手机号" required autofocus />
+                                            <input type="text" name="newmobile" class="form-control" placeholder="请输入需要绑定的手机号" required autofocus />
                                         </div>
                                         <br/>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="请输入验证码" required>
+                                            <input type="text" name="verify" class="form-control" placeholder="请输入验证码" required>
                                             <span class="input-group-btn">
 						                    <button class="btn btn-info" type="button">
 							                 验证码
 						                    </button>
 					                    </span>
                                         </div><!-- /input-group -->
-                                        <button style="margin-top: 30px;margin-left: 125px" id="btn2" class="btn btn-sm btn-primary " type="button">确认</button>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit1" class="btn btn-sm btn-primary " type="button">确认</button>
                                     </form>
                                 </div>
                             </div>
 
 
+
+
+                            <div id="verymobile" style="display: none">
+                                <div style="margin-top: 100px" >
+                                    <label style="color: gray" >
+                                        请输入原手机进行验证：
+                                    </label>
+                                </div>
+                                <div style="margin-top: 50px;margin-left: 250px;color: gray" >
+
+                                    <form style="width: 300px">
+                                        <div>
+                                            <label  >原绑定手机：</label>
+                                            <input type="text" name="rawmobile" class="form-control" placeholder="请输入需要绑定的手机号" required autofocus />
+                                        </div>
+                                        <br/>
+                                        <div class="input-group">
+                                            <input type="text" name="verify" class="form-control" placeholder="请输入验证码" required>
+                                            <span class="input-group-btn">
+						                    <button class="btn btn-info" type="button">
+							                 验证码
+						                    </button>
+					                    </span>
+                                        </div><!-- /input-group -->
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit2" class="btn btn-sm btn-primary " type="button">确认</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>

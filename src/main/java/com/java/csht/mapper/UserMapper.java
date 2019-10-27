@@ -21,6 +21,9 @@ public interface UserMapper {
     @Select("select * from user where id = #{id}")
     public User findById(String id);
 
-    @Update("update user set mobile=#{mobile} where psw=#{psw}")
-    public boolean updatetMobileBypPsw(String mobile, String psw);
+    @Select("select * from user where mobile = #{mobile} id = #{id}")
+    public List<User> findByMobile(String mobile, Integer id);
+
+    @Update("update user set mobile=#{mobile} where psw=#{psw} and id = #{id}")
+    public boolean updatetMobileBypPsw(String mobile, String psw, Integer id);
 }

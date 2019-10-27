@@ -62,23 +62,34 @@ public class UserInfoController {
         ModelAndView modelAndView = new ModelAndView("/userInfo/bindmobile");
         User user = userServier.findById(userId);
         String mobile = user.getMobile();
+        Integer id = user.getId();
         Boolean state = null;
         if (mobile.equals("")){
             state = false;
         }else {
             state = true;
         }
-        System.out.println(state);
+
+
+        System.out.println();
         modelAndView.addObject("state", state);
+        modelAndView.addObject("userId", id);
         return modelAndView;
     }
     @PostMapping("/bindnewmobile")
     @ResponseBody
-    public String  BindNewMobile(String mobile, String psw){
-        Boolean updataMobile = userServier.UpdateMobileByPsw(mobile, psw);
+    public String  BindNewMobile(String mobile, String psw,Integer userId){
+        Boolean updataMobile = userServier.UpdateMobileByPsw(mobile, psw, userId);
         if (updataMobile){
             return "success";
         }
         return "error";
+    }
+
+    @PostMapping("/editbindmobileiolp")
+    @ResponseBody
+    public String EditBindMobile(String mobile,String verify,Integer userId){
+        System.out.println(mobile);
+        return "success";
     }
 }
