@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改绑定邮箱</title>
+    <th:block th:include="/include/bootstrap ::head"></th:block>
+    <link rel="stylesheet" href="css/userInfo.css">
+    <script>
+        $(function() {
+            //跟下拉菜单的值页面变化
+            $('#editMode').change(function () {
+
+                if ($(this).val()=="1"){
+                    $('#bindMobile').show();
+                    $("#bindMailbox").hide();
+                }
+                if ($(this).val()=="2"){
+                    $("#bindMailbox").show();
+                    $('#bindMobile').hide();
+                }
+            });
+
+            //验证手机或邮箱
+            $('#btnEdit1').click(function () {
+                if ($("#editMode").val()=="1"){
+                    $.ajax({
+                        url:'/pswverify',
+                        type:"post",
+                        dataType:"text",
+                        data:{
+                            'userId':$('#userId').val(),
+                            'editMode':$('#editMode').val(),
+                            'verify':$('#verify1').val()
+                        },
+                        success:function (json) {
+                            $('#editWay').hide();
+                            $('#editPsw').show();
+                            $('#step-edit1').css("color","gray");
+                            $('#step-edit2').css("color","crimson");
+                        },
+                        error:function () {
+
+                        }
+                    });
+                }
+                if ($("#editMode").val()=="2"){
+                    $.ajax({
+                        url:'/pswverify',
+                        type:"post",
+                        dataType:"text",
+                        data:{
+                            'userId':$('#userId').val(),
+                            'editMode':$('#editMode').val(),
+                            'verify':$('#verify1').val()
+                        },
+                        success:function (json) {
+                            $('#editWay').hide();
+                            $('#editPsw').show();
+                            $('#step-edit1').css("color","gray");
+                            $('#step-edit2').css("color","crimson");
+                        },
+                        error:function () {
+
+                        }
+                    });
+                }
+            });
+            //修改登录密码
+            $('#btnEdit2').click(function () {
+                    $.ajax({
+                        url:'/pswedit' ,
+                        type:"post",
+                        dataType:"text",
+                        data:{
+                            'mailbox':$('#mailbox').val(),
+                            'verify':$('#verify2').val()
+                        },
+                        success:function (json) {
+                            $('#editPsw').hide();
+                            $('#win').show();
+                            win();
+                            $('#step-edit2').css("color","gray");
+                            $('#step-edit3').css("color","crimson");
+                        }
+                    });
+
+
+            });
+
+            function win() {
+                var text = $('#span1').text();
+                var time = window.setInterval(function () {
+                    if (text==1){
+                        window.clearInterval(time);
+                        window.location.replace("/userinfo");
+                    }
+                    text--;
+                    $('#span1').html(text);
+
+                },1000);
+
+            }
+        });
+    </script>
+</head>
+<body>
+<th:block th:replace="include/bootstrap :: nav-userInfo"></th:block>
+<th:block th:replace="include/bootstrap :: userinfo-menu"></th:block>
+
+<div class="col-xs-12 col-sm-8 " >
+    <div class="panel panel-default">
+        <div class="panel-body" >
+            <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+                <div class="row placeholders" >
+                    <div class="col-md-5 col-md-offset-1" style="color: gray">
+                        <div>
+                            <label style="" >
+                                位置： 账号管理 >
+                                <a th:href="@{/userinfo}" style="color: gray">安全中心</a>
+                                > 修改登录密码
+                            </label>
+
+                            <input type="hidden" th:value="${user.id}" id="userId">
+
+                            <label style="margin-top:70px;margin-left: 150px;width: 300px;opacity:0.7;white-space: nowrap" >
+                                <span>····</span>
+                                <span id="step-edit1" style="color:crimson">1.选择修改方式</span>
+                                <span>
+                                        ····
+                                        <span  class="glyphicon glyphicon-chevron-right" style="color: rgb(96, 96, 96);"></span>
+                                        ····
+                                    </span>
+                                <span id="step-edit2">2.绑定新邮箱</span>
+                                <span>
+                                        ····
+                                        <span  class="glyphicon glyphicon-chevron-right" style="color: rgb(96, 96, 96);"></span>
+                                        ····
+                                    </span>
+                                <span id="step-edit3">3.完成</span>
+                                <span>····</span>
+                            </label>
+                        </div>
+
+                        <div  id="editWay" >
+                            <div style="margin-top: 50px" >
+                                <label style="color: gray" >
+                                    请选择验证方式:
+                                </label>
+
+                            </div>
+                            <div style="margin-top: 50px;margin-left: 250px;color: gray" >
+
+                                <form role="form" style="width: 300px">
+
+                                    <div class="form-group"   >
+                                        <label>选择修改方式:</label>
+                                        <select id="editMode" class="form-control" name="editMode">
+                                            <option value="1" th:if="${user.mobile}!=''">手机验证</option>
+                                            <option value="2" th:if="${user.mailbox}!=''">邮箱验证</option>
+                                        </select>
+                                    </div>
+                                    <div id="bindMobile" >
+                                        <label>当前绑定手机:</label>
+                                        <span th:text="${user.mobile}"></span>
+                                    </div>
+
+                                    <div id="bindMailbox" style="display: none">
+                                        <label>当前绑定邮箱:</label>
+                                        <span th:text="${user.mailbox}"></span>
+                                    </div>
+
+                                    <div style="margin-top: 10px" class="input-group">
+                                        <input type="text" name="verify" id="verify1" class="form-control" placeholder="请输入验证码" required>
+                                        <span class="input-group-btn">
+						                        <button class="btn btn-info" type="button">
+							                    验证码
+						                        </button>
+					                            </span>
+                                    </div>
+                                    <button style="margin-top: 10px;margin-left: 125px" id="btnEdit1" class="btn btn-sm btn-primary " type="button">下一步</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div  id="editPsw" style="display: none">
+                            <div style="margin-top: 50px">
+                                <label style="color: gray" >
+                                    请输入要绑定的新邮箱及验证码:
+                                </label>
+                            </div>
+                            <div style="margin-top: 50px;margin-left: 250px;color: gray" >
+
+                                <form role="form" style="width: 300px">
+                                    <div>
+                                        <span style="color: red">*</span>
+                                        <label  >新绑定邮箱:</label>
+                                        <input type="email" name="mailbox" id="mailbox" class="form-control" placeholder="请输入密码，进行验证" required autofocus />
+                                    </div>
+                                    <br/>
+                                    <div style="margin-top: 10px" class="input-group">
+                                        <input type="text" name="verify" id="verify2" class="form-control" placeholder="请输入验证码" required>
+                                        <span class="input-group-btn">
+						                        <button class="btn btn-info" type="button">
+							                    验证码
+						                        </button>
+					                            </span>
+                                    </div>
+                                    <div id="mistake" style="height: 40px;margin-top: 10px;display: none" class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert"
+                                                aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <span >两次密码不一致！</span>
+                                    </div>
+                                </form>
+                                <button style="margin-top: 20px;margin-left: 125px" id="btnEdit2" class="btn btn-sm btn-primary " type="button">下一步</button>
+                            </div>
+                        </div>
+
+                        <div id="win" style="display: none;margin-bottom: 50px;width: 300px;height: 300px;padding-left: 230px;padding-top: 50px">
+                            <div style="margin-bottom: 65px;margin-left: -230px" >
+                                <label style="color: gray" >
+                                    修改成功：
+                                </label>
+
+                            </div>
+
+                            <label style="white-space: nowrap; margin-bottom: 30px;">
+                                <p>
+                                    <span class="glyphicon glyphicon-ok-sign" style="color: rgb(0,255,0); font-size: 75px;margin-left: 55px"></span></p>
+                                <p style="margin-left: 75px">恭喜你</p>
+                                <p style="margin-left: 40px">绑定游戏修改成功</p>
+
+                                <p style="margin-left: 25px"><span id="span1">5</span>秒后自动返回安全中心</p>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

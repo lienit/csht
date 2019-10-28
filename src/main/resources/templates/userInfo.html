@@ -110,11 +110,11 @@
                                                     一个包含数字和字母，并长度超过<br/>
                                                     6位以上的密码。
                                                     </span>
-                                    <a href="#" style="padding-left: 50px">修改</a>
+                                    <a th:href="@{/editpsw(userId=${user.id})}" style="padding-left: 50px">修改</a>
                                 </div>
 
                             </div>
-                            <div  style="margin-top: 50px">
+                            <div  style="margin-top: 30px">
 
                                 <div class="text-explain" th:if="${user.mailbox}==''">
                                     <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 9);font-size: 17px;"> 未绑定</span>
@@ -124,7 +124,7 @@
                                                         议您设置一个常用的邮箱，以便到<br/>
                                                         时候可以通过邮箱找回密码
                                                     </span>
-                                    <a  href="#" style="padding-left: 50px">设置</a>
+                                    <a  th:href="@{/editmailbox(userId=${user.id})}" style="padding-left: 50px">设置</a>
                                 </div>
 
 
@@ -136,7 +136,7 @@
                                                         议您设置一个常用的邮箱，以便到<br/>
                                                         时候可以通过邮箱找回密码
                                                 </span>
-                                    <a href="#" style="padding-left: 50px">修改</a>
+                                    <a th:href="@{/editmailbox(userId=${user.id})}" style="padding-left: 50px">修改</a>
 
                                 </div>
 

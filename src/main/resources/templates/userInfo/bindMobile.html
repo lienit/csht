@@ -95,7 +95,7 @@
         function win() {
             var text = $('#span1').text();
             var time = window.setInterval(function () {
-                if (text==2){
+                if (text==1){
                     window.clearInterval(time);
                     window.location.replace("/userinfo");
                 }
@@ -184,26 +184,29 @@
                                             </button>
                                             <span >数据错误！</span>
                                         </div>
-                                        <button style="margin-top: 30px;margin-left: 125px" id="btnnew" class="btn btn-sm btn-primary " type="button">确认</button>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnnew" class="btn btn-sm btn-primary " type="button">下一步</button>
                                     </form>
                                 </div>
                             </div>
 
 
-                            <div id="win" style="display: none;width: 300px;height: 300px;padding-left: 230px;padding-top: 50px">
+                            <div id="win" style="display: none;margin-bottom: 50px;width: 300px;height: 300px;padding-left: 230px;padding-top: 50px">
                                 <div style="margin-bottom: 65px;margin-left: -230px" >
                                     <label style="color: gray" >
-                                        设置成功：
+                                        修改成功：
                                     </label>
 
                                 </div>
 
                                 <label style="white-space: nowrap; margin-bottom: 30px;">
-                                    <span style="margin-left: 100px">绑定成功！</span><br/>
-                                    <span id="span1">10</span>
-                                    秒后跳转安全设置，亦可点击按钮跳转
+                                    <p>
+                                        <span class="glyphicon glyphicon-ok-sign" style="color: rgb(0,255,0); font-size: 75px;margin-left: 55px"></span></p>
+                                    <p style="margin-left: 75px">恭喜你</p>
+                                    <p style="margin-left: 40px">绑定手机修改成功</p>
+
+                                    <p style="margin-left: 25px"><span id="span1">5</span>秒后自动返回安全中心</p>
                                 </label>
-                                <a style="margin-left: 75px" id="btnwin" type="button" class="btn btn-lg btn-success">成功(10)</a>
+
                             </div>
 
                             <div th:if="${state}?true:false" id="editMobile">
@@ -228,7 +231,7 @@
 						                    </button>
 					                    </span>
                                         </div><!-- /input-group -->
-                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit1" class="btn btn-sm btn-primary " type="button">确认</button>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit1" class="btn btn-sm btn-primary " type="button">下一步</button>
                                     </form>
                                 </div>
                             </div>
@@ -258,7 +261,7 @@
 						                    </button>
 					                    </span>
                                         </div><!-- /input-group -->
-                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit2" class="btn btn-sm btn-primary " type="button">确认</button>
+                                        <button style="margin-top: 30px;margin-left: 125px" id="btnEdit2" class="btn btn-sm btn-primary " type="button">下一步</button>
                                     </form>
                                 </div>
                             </div>
