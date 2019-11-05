@@ -1,17 +1,36 @@
 package com.java.csht.mapper;
 
 import com.java.csht.model.RecAddress;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Repository
+@Transactional(rollbackFor = Exception.class)
 public interface RecAddressMapper {
-    int deleteByPrimaryKey(Integer id);
+    @Select("select * from recaddress ORDER BY defaultAddress desc")
+    public List<RecAddress> findAll();
 
-    int insert(RecAddress record);
+    @Select("select * from recaddress where id =#{id}")
+    public RecAddress findById(String id);
 
-    int insertSelective(RecAddress record);
+    @Select("select * from recaddress where defaultAddress=#{defaultAddress}")
+    public RecAddress findByDefault(Boolean defaultAddress);
 
-    RecAddress selectByPrimaryKey(Integer id);
+    @Update("update recaddress set consignee=#{consignee},incampus=#{incampus},dataAddress=#{dataaddress}, mobile=#{mobile},defaultAddress=#{defaultAddress} where id=#{id}")
+    public Boolean updateRecAddress(RecAddress recAddress);
 
-    int updateByPrimaryKeySelective(RecAddress record);
+    @Update("update recAddress set defaultAddress=#{defaultAddress} where id = #{id}")
+    public Boolean updateDefalutAddr(String id,Boolean defaultAddress);
 
-    int updateByPrimaryKey(RecAddress record);
+    @Insert("insert into recAddress(consignee,incampus,dataAddress,mobile,defaultAddress) values(#{consignee},#{incampus},#{dataaddress},#{mobile},#{defaultAddress})")
+    public Boolean insertRecAddress(RecAddress recAddress);
+
+    @Delete("delete from recAddress where id = #{id}")
+    public Boolean deleteAddress(String id);
 }

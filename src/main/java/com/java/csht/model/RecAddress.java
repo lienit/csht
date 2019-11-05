@@ -11,6 +11,8 @@ public class RecAddress {
 
     private String mobile;
 
+    private Boolean defaultAddress;
+
     public Integer getId() {
         return id;
     }
@@ -49,5 +51,25 @@ public class RecAddress {
 
     public void setMobile(String mobile) {
         this.mobile = mobile == null ? null : mobile.trim();
+    }
+
+    public Boolean getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(Boolean defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "RecAddress{" +
+                "id=" + id +
+                ", consignee='" + consignee + '\'' +
+                ", incampus='" + incampus + '\'' +
+                ", dataaddress='" + dataaddress + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", defaultAddress=" + defaultAddress +
+                '}';
     }
 }

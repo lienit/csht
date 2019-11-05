@@ -1,6 +1,6 @@
 package com.java.csht.model;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 public class User {
     private Integer id;
@@ -11,15 +11,19 @@ public class User {
 
     private String realname;
 
-    private String sex;
+    private Boolean sex;
 
     private String mobile;
 
     private String address;
 
-    private Date birthday;
+    private String birthday;
 
+    @NotBlank(message = "邮箱不能为空")
     private String mailbox;
+
+    private String photo;
+
 
     public Integer getId() {
         return id;
@@ -53,12 +57,12 @@ public class User {
         this.realname = realname == null ? null : realname.trim();
     }
 
-    public String getSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex == null ? null : sex.trim();
+    public void setSex(Boolean sex) {
+        this.sex = sex;
     }
 
     public String getMobile() {
@@ -77,11 +81,11 @@ public class User {
         this.address = address == null ? null : address.trim();
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -91,6 +95,14 @@ public class User {
 
     public void setMailbox(String mailbox) {
         this.mailbox = mailbox == null ? null : mailbox.trim();
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Override

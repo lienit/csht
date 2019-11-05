@@ -43,7 +43,7 @@
 		</filter>
 	</appender>
 	<!-- 定义日志全局最低输出级别是INFO，同时向控制台和日滚动文件输出 -->
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>

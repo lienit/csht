@@ -1,7 +1,7 @@
 package com.java.csht.controller;
 
 import com.java.csht.model.User;
-import com.java.csht.service.UserServier;
+import com.java.csht.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserInfoController {
 
     @Autowired
-    private UserServier userServier;
+    private UserService userService;
 
     @RequestMapping("/userinfo")
     public ModelAndView UserInfo(){
@@ -22,9 +22,8 @@ public class UserInfoController {
         Integer count = 0;
 
 //        根据username查找用户信息
-        User user = new User();
-        user.setUsername("李无心");
-        User byUserName = userServier.findByUserName(user);
+
+        User byUserName = userService.findByUserName("李无心");
 //截取邮箱,隐藏邮箱
         if (!byUserName.getMailbox().equals("")){
             String mailbox = byUserName.getMailbox();
@@ -60,7 +59,7 @@ public class UserInfoController {
     @RequestMapping("/bindmobile")
     public ModelAndView BindMobile(String userId){
         ModelAndView modelAndView = new ModelAndView("userInfo/bindMobile");
-        User user = userServier.findById(userId);
+        User user = userService.findById(userId);
         String mobile = user.getMobile();
         Integer id = user.getId();
         Boolean state = null;
@@ -79,7 +78,7 @@ public class UserInfoController {
     @PostMapping("/bindnewmobile")
     @ResponseBody
     public String  BindNewMobile(String mobile, String psw,Integer userId){
-        Boolean updataMobile = userServier.UpdateMobileByPsw(mobile, psw, userId);
+        Boolean updataMobile = userService.UpdateMobileByPsw(mobile, psw, userId);
         if (updataMobile){
             return "success";
         }
@@ -95,7 +94,7 @@ public class UserInfoController {
     @RequestMapping("/editpsw")
     public ModelAndView editPsw(String userId){
         ModelAndView modelAndView = new ModelAndView("userInfo/editPsw");
-        User user = userServier.findById(userId);
+        User user = userService.findById(userId);
         String mailbox = user.getMailbox();
         String mobile = user.getMobile();
         //截取邮箱,隐藏邮箱
@@ -138,7 +137,7 @@ public class UserInfoController {
     @RequestMapping("/editmailbox")
     public ModelAndView EditMailbox(String userId){
         ModelAndView modelAndView = new ModelAndView("userInfo/editMailbox");
-        User user = userServier.findById(userId);
+        User user = userService.findById(userId);
         String mailbox = user.getMailbox();
         String mobile = user.getMobile();
         //截取邮箱,隐藏邮箱
@@ -159,6 +158,7 @@ public class UserInfoController {
             user.setMobile(mobile1+"*******"+mobile2);
 
         }
+
         modelAndView.addObject("user", user);
         return modelAndView;
     }

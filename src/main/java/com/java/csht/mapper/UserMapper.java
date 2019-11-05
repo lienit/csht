@@ -16,7 +16,7 @@ public interface UserMapper {
     public List<User> LoginUser(User user);
 
     @Select("select * from user where username = #{username}")
-    public User findByUserName(User user);
+    public User findByUserName(String username);
 
     @Select("select * from user where id = #{id}")
     public User findById(String id);
@@ -26,4 +26,9 @@ public interface UserMapper {
 
     @Update("update user set mobile=#{mobile} where psw=#{psw} and id = #{id}")
     public boolean updatetMobileBypPsw(String mobile, String psw, Integer id);
+
+    @Update("update user set photo=#{photo},mobile=#{mobile},sex=#{sex},address=#{address},photo=#{photo},realName=#{realname},birthday=#{birthday},mailbox=#{mailbox} where  userName = #{username}")
+    public boolean updatetByUserName(User user);
+
+
 }

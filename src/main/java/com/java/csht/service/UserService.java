@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
-public class UserServier {
+public class UserService {
     @Autowired
     public UserMapper userMapper;
 
@@ -27,8 +27,8 @@ public class UserServier {
         return resultStr;
     }
 
-    public User findByUserName(User user){
-        User byUserName = userMapper.findByUserName(user);
+    public User findByUserName(String username){
+        User byUserName = userMapper.findByUserName(username);
         return byUserName;
     }
 
@@ -46,4 +46,10 @@ public class UserServier {
         boolean b = userMapper.updatetMobileBypPsw(mobile, psw, id);
         return b;
     }
+
+    public Boolean UpdateByUserName(User user){
+        boolean b = userMapper.updatetByUserName(user);
+        return b;
+    }
+
 }

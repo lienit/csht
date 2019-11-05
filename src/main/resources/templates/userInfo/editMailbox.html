@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>修改绑定邮箱</title>
     <th:block th:include="/include/bootstrap ::head"></th:block>
-    <link rel="stylesheet" href="css/userInfo.css">
+    <link rel="stylesheet" th:href="@{css/userInfo.css}">
     <script>
         $(function() {
             //跟下拉菜单的值页面变化
@@ -104,8 +104,8 @@
     </script>
 </head>
 <body>
-<th:block th:replace="include/bootstrap :: nav-userInfo"></th:block>
-<th:block th:replace="include/bootstrap :: userinfo-menu"></th:block>
+<th:block th:replace="include/UserManage :: nav-userInfo"></th:block>
+<th:block th:replace="include/UserManage :: userinfo-menu"></th:block>
 
 <div class="col-xs-12 col-sm-8 " >
     <div class="panel panel-default">

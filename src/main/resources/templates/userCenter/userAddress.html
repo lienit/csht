@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>收货地址</title>
+    <th:block th:include="/include/bootstrap :: head"/>
+    <link rel="stylesheet" href="css/userInfo.css"/>
+    <script>
+        $(function () {
+            $("#btnAdd").click(function () {
+                var defaultAddr;
+                if ($("input[type='checkbox']:checked").val() == undefined) {
+                    // console.log($("inout[name=default]").val(0))
+                    defaultAddr = "0";
+                } else {
+                    defaultAddr = $("input[type='checkbox']:checked").val();
+                }
+                console.log(defaultAddr);
+                var formData = new FormData();
+                formData.append("id", $("#userid").val());
+                formData.append("consignee", $("input[name=consignee]").val())
+                formData.append("mobile", $("input[name=mobile]").val());
+                formData.append("incampus", $("input[name=incampus]").val());
+                formData.append("dataaddress", $("input[name=dataAddress]").val());
+                formData.append("defaultAddr", defaultAddr);
+                $.ajax({
+                    url: "/addrecaddress",
+                    type: "post",
+                    dataType: "text",
+                    data: formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result == "success") {
+                            window.location.reload();
+
+                            alert("添加成功！")
+                        }
+                    }
+                })
+            });
+            
+            $("#btnEdit").click(function () {
+
+                var defaultAddr;
+                if ($("input[type='checkbox']:checked").val() == undefined) {
+                    // console.log($("inout[name=default]").val(0))
+                    defaultAddr = "0";
+                } else {
+                    defaultAddr = $("input[type='checkbox']:checked").val();
+                }
+                console.log(defaultAddr);
+                var formData = new FormData();
+                formData.append("id",$("#recaddr").val());
+                formData.append("userId", $("#userid").val());
+                formData.append("consignee", $("#consignee").val())
+                formData.append("mobile", $("#mobile").val());
+                formData.append("incampus", $("#incampus").val());
+                formData.append("dataaddress", $("#dataAddress").val());
+                formData.append("defaultAddr", defaultAddr);
+                $.ajax({
+                    url: "/editaddress",
+                    type: "post",
+                    dataType: "text",
+                    data: formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result == "success") {
+                            window.location.reload();
+
+                            alert("修改成功！")
+                        }
+                    }
+                })
+            })
+
+        })
+        function deleteAddress(recAdd) {
+            if (confirm('确定删除？')) {
+                window.location.href = "/deleteaddr?userId="+[[${user.id}]]+"&addressId="+$(recAdd).attr("value");
+
+            } else {
+                return false;
+            }
+        }
+
+        function editAddress(recAdd) {
+            var formData = new FormData();
+            formData.append("addressId",$(recAdd).attr("value"));
+            formData.append("userId", [[${user.id}]])
+            $.ajax({
+                url: "/findbyidaddress",
+                type: "post",
+                dataType: "JSON",
+                data: formData,
+                async: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $("#recaddr").val(result.id);
+                    $("#consignee").val(result.consignee);
+                    $("#mobile").val(result.mobile);
+                    $("#incampus").val(result.incampus);
+                    $("#dataAddress").val(result.dataaddress);
+                    if (result.defaultAddress){
+                        $("#defaultAddr").prop("checked","checked");
+                    }
+
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <th:block th:replace="include/UserManage :: nav-userInfo"></th:block>
+    <th:block th:replace="include/UserManage :: userinfo-menu"></th:block>
+
+        <div class="col-xs-12 col-sm-10 " >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    收货地址
+                </div>
+                <div style="display: none" id="succeed-info" class="alert  alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <span class="glyphicon glyphicon-ok" style="color: limegreen; font-size: 15px;"></span>
+                    添加成功！
+                </div>
+                <div class="panel-body" style="">
+                    <h6 style="color: #d58512">新增收货地址</h6>
+                    <div style="width: 500px;padding-left: 150px">
+                        <input type="hidden" th:value="${user.id}" id="userid">
+                        <form >
+                            <div class="form-group">
+                                <span style="color: red">*</span>
+                                <label>收货人：</label>
+                                <input type="text" class="form-control"  name="consignee" placeholder="收货人"  required>
+                            </div>
+                            <div class="form-group">
+                                <span style="color: red">*</span>
+                                <label>联系电话：</label>
+                                <input type="text" class="form-control"  name="mobile" placeholder="填写联系电话"  required>
+                            </div>
+                            <div class="form-group">
+                                <span style="color: red">*</span>
+                                <label>所在校区：</label>
+                                <input type="text" class="form-control"  name="incampus" placeholder="所在校区"  required>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 10px">
+                                <span style="color: red">*</span>
+                                <label>详细地址：</label>
+                                <input type="text" class="form-control"  name="dataAddress" placeholder="详细地址"  required>
+                            </div>
+                            <div class="checkbox" >
+                                <label>
+                                    <input type="checkbox" name="default" value="1"> 设置为默认收货地址
+                                </label>
+                            </div>
+                            <button id="btnAdd" type="button" style="margin-left: 100px;margin-bottom: 10px"  class="btn btn-sm btn-primary ">保存</button>
+                        </form>
+                    </div>
+                    <div  class="alert alert-info">
+                        <span class="glyphicon glyphicon-info-sign" style="color: rgb(0, 173, 255);"></span>
+                        已保存[[${count}]]了条地址，还能保存[[${20-count}]]条地址
+                    </div>
+                    <div class="table table-bordered">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>收货人</th>
+                                <th>所在校区</th>
+                                <th>详细地址</th>
+                                <th>联系电话</th>
+                                <th>操作</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr  th:each="recAdd,stat:${recAddress}">
+                                <td style="display: none">[[${recAdd.id}]]</td>
+                                <td>[[${stat.count}]]</td>
+                                <td>[[${recAdd.consignee}]]</td>
+                                <td>[[${recAdd.incampus}]]</td>
+                                <td>[[${recAdd.dataaddress}]]</td>
+                                <td>[[${recAdd.mobile}]]</td>
+
+                                <td >
+                                    <a href="#" th:value="${recAdd.id}" onclick="editAddress(this)" data-toggle="modal" data-target="#myModal">修改</a>
+                                    <a href="#" th:value="${recAdd.id}" id="delete" onclick="deleteAddress(this)" style="padding-left: 10px">删除</a>
+                                </td>
+                                <td th:if="${recAdd.defaultAddress}">
+                                    <div class="form-control" style="color:#d58512;border:1px solid #d58512;text-align:center;background-color: #FFD6CC">
+                                        默认地址
+                                    </div>
+                                </td>
+                                <td th:if="!${recAdd.defaultAddress}">
+                                    <a   style="display: block; text-align: center;" th:href="@{/setdefault(addressId=${recAdd.id},userId=${user.id})}" >
+                                        设为默认
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            修改地址
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form >
+                                            <input type="hidden" id="recaddr">
+                                            <div class="form-group">
+                                                <span style="color: red">*</span>
+                                                <label>收货人：</label>
+                                                <input type="text" class="form-control" id="consignee" name="consignee" placeholder="收货人"  required>
+                                            </div>
+                                            <div class="form-group">
+                                                <span style="color: red">*</span>
+                                                <label>联系电话：</label>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="填写联系电话"  required>
+                                            </div>
+                                            <div class="form-group">
+                                                <span style="color: red">*</span>
+                                                <label>所在校区：</label>
+                                                <input type="text" class="form-control" id="incampus" name="incampus" placeholder="所在校区"  required>
+                                            </div>
+                                            <div class="form-group" style="padding-bottom: 10px">
+                                                <span style="color: red">*</span>
+                                                <label>详细地址：</label>
+                                                <input type="text" class="form-control" id="dataAddress" name="dataAddress" placeholder="详细地址"  required>
+                                            </div>
+                                            <div class="checkbox" id="defaultAddr">
+                                                <label>
+                                                    <input type="checkbox"  name="defaultAddr" value="1"> 设置为默认收货地址
+                                                </label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                        </button>
+                                        <button type="button" id="btnEdit" class="btn btn-primary" data-dismiss="modal">
+                                            提交更改
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+</html>

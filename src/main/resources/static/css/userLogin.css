@@ -6,7 +6,7 @@ body {
 }
 .format{
     margin: 44px 0;
-    background-image: url("../img/beijing1.jpg");
+    background-image: url("../images/beijing1.jpg");
     background-size:cover;
 }
 .form-signin {

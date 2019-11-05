@@ -1,14 +1,16 @@
 spring:
   thymeleaf:
     cache: false
-
   profiles:
     active: dev
   servlet:
     multipart:
       #  \u5355\u4E2A\u6587\u4EF6\u7684\u6700\u5927\u6587\u4EF6\u5927\u5C0F
-      max-file-size: 2MB
+      max-file-size: 5MB
       #      \u4E00\u4E2A\u8BF7\u6C42\u6700\u5927\u7684\u6587\u4EF6\u5927\u5C0F
       max-request-size: 50MB
   #      \u4E34\u65F6\u6587\u4EF6\u5939
   #      location:
+  mvc:
+    static-path-pattern=/static/**:
+

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <th:block th:include="/include/bootstrap :: head"/>
+    <link rel="stylesheet" href="css/userInfo.css"/>
+    <script src="js/info.js"></script>
+    <script>
+        $(function () {
+            onload = function () {
+                //加载用户头像
+                if ($("#photoPath").val()!=""){
+                    $("#image1").attr("width","100px");
+                    $("#image1").attr("height","100px");
+                    $("#image1").attr("src", "/uploads/" +$("#photoPath").val());
+                }
+                //获取地址下拉框中的城市名
+                // var cityName = cityArr[$("#userProvince").val()];
+                // var cityChecked = cityName[$("#userCity").val()];
+                //获取地址下拉框中的省份名
+                var cityName = cityArr[$("#province").val()];
+                var cityobj=document.getElementById("city");
+                //通过循环遍历市县元素给下拉框赋值
+
+                for (var i=1; i < cityArr[$("#province").val()].length; i++){
+                    var select=document.createElement("option")
+                    //在新增的option中添加值
+                    select.innerHTML=cityName[i];
+                    //在新增的option中添加value
+                    select.value=i;
+                    if (cityName[i]==$("#userCity").val()){
+                        select.selected = true;
+                    }
+                    document.getElementById("city").appendChild(select);
+
+                }
+                document.getElementById("city").removeChild(document.getElementById("city").firstElementChild);
+
+
+
+
+            }
+
+            function getCity()
+            {
+                //1.获取省份选择框的对象
+                var provincesobj=document.getElementById("province");
+                //2.获取市县选择框的对象
+                var cityobj=document.getElementById("city");
+
+                //3.获取被选择的省份的索引
+                var index=provincesobj.selectedIndex;
+
+                //alert(provincesobj[index].value+","+provincesobj[index].text);
+                ////4.通过省份的索引获取它的value值，value值也是它在数组的索引值
+                var value=provincesobj[index].value;
+
+
+                //5.获取对应省份的市县数组
+                var cityName=cityArr[value];
+                //6.将下拉框清楚索引为0之后的，只保留第一个
+                cityobj.length=1;
+                //通过循环遍历市县元素给下拉框赋值
+
+                for(var i=1;i<cityArr[value].length;i++)
+                {
+                    cityobj.options[cityobj.options.length]=new Option(cityName[i],i);
+                }
+                document.getElementById("city").removeChild(document.getElementById("city").firstElementChild);
+
+
+            }
+
+
+            $('#province').change(function () {
+                getCity();
+            })
+
+            $('#btn1').click(function () {
+                //获取地址下拉框中的城市名
+                var cityName = cityArr[$("#province").val()];
+                var cityChecked = cityName[$("#city").val()];
+                //获取地址下拉框中的省份名
+                var provinceChecked = provinceArr[$("#province").val()];
+
+                
+
+                var formData = new FormData();
+                formData.append("username",$("input[name=userName]").val());
+                formData.append("realname",$("input[name=realName]").val());
+                formData.append("mobile",$("input[name=mobile]").val());
+                formData.append("sex",$("input[name=sex]").val());
+                formData.append("birthday",$("input[name=birthday]").val());
+                formData.append("address",provinceChecked+"-"+cityChecked);
+                formData.append("mailbox",$("input[name=mailbox]").val());
+                formData.append("photo",$("#photoPath").val());
+                $.ajax({
+                   url:'/edituserdata',
+                   type:"post",
+                   dataType:"text",
+                   data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                   success:function (json) {
+                       if (json=="success"){
+                           $("#succeed-info").show();
+                           setTimeout(function () {
+                               $("#succeed-info").hide();
+                           },5000);
+                       }
+                   }
+               })
+            });
+
+            function imgload() {
+                var formData = new FormData();
+                formData.append("file", $("#photo")[0].files[0]);
+                formData.append("username",$("input[name=userName]").val());
+                $.ajax({
+                    url:'/imgupload',
+                    type:"post",
+                    dataType:"json",
+                    data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success:function (result) {
+
+                        var objs;
+                        if ((typeof result == 'object') && result.constructor == Object){
+                            objs = result;
+                        }else {
+                            objs = eval("("+result+")");
+                        }
+
+                            if (objs.succeed==true){
+                                $("#image1").attr("width","100px");
+                                $("#image1").attr("height","100px");
+                                $("#image1").attr("src",objs.paths);
+                                $("#photoPath").val(objs.paths);
+                                $("#error-info").hide();
+                            }else {
+                                $("#error-info").show();
+
+                            }
+
+                    }
+                });
+            }
+
+            $("#photo").change(function () {
+                imgload();
+            })
+        });
+
+    </script>
+</head>
+<body>
+    <th:block th:replace="include/UserManage :: nav-userInfo"></th:block>
+    <th:block th:replace="include/UserManage :: userinfo-menu"></th:block>
+
+    <div class="col-xs-12 col-sm-8 " >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                个人资料
+            </div>
+            <div class="panel-body" >
+                <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+                    <div class="row placeholders" >
+                        <div style="display: none" id="succeed-info" class="alert  alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">
+                                &times;
+                            </button>
+                            <span class="glyphicon glyphicon-ok" style="color: limegreen; font-size: 15px;"></span>
+                            资料修改成功！
+                        </div>
+                        <div style="padding-left: 150px">
+                            <p style="padding-top: 30px">亲爱的<th:block th:text="${user.username}"/>，填写真实的资料，有助于好友找到你哦。</p>
+                            <div style="width: 300px">
+                                <form  id="fom" enctype="multipart/form-data">
+                                    <div>
+                                        <label>用户头像：</label>
+                                        <img class="img-circle"  id="image1"/>
+                                        <input  type="file" id="photo" name="photo">
+                                        <input type="hidden" th:value="${user.photo}" id="photoPath">
+                                        <div style="margin-top: 5px;padding-top: 10px;display: none" class="alert input-sm alert-danger" id="error-info">
+                                            <span class="glyphicon glyphicon-remove" style="color: red;"> </span>
+                                            文件格式错误！
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>用户名：</label>
+                                        <input  type="text" class="form-control"  name="userName" readonly="readonly"  th:value="${user.username} "  required>
+                                    </div>
+                                <div class="form-group">
+                                    <label>真实姓名：</label>
+                                    <input type="text" class="form-control" th:value="${user.realname}" name="realName" placeholder="填写真实姓名"  required>
+                                </div>
+                                <div class="form-group">
+                                    <label>联系电话：</label>
+                                    <input type="text" class="form-control" th:value="${user.mobile}" name="mobile" placeholder="填写联系电话"  required>
+                                </div>
+                                <div class="form-group">
+                                    <label>性别：</label>
+                                    <div style="display: inline" th:if="${user.sex}">
+                                        <input type="radio"  checked  name="sex"  value="true" >男
+                                        &nbsp;
+                                        <input  type="radio"   name="sex"  value="false" >女
+                                    </div>
+                                    <div style="display: inline" th:if="!${user.sex}">
+                                        <input type="radio"    name="sex"  value="true" >男
+                                        &nbsp;
+                                        <input  type="radio" checked  name="sex"  value="false" >女
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>出生日期：</label>
+                                    <input type="date" th:value="${user.birthday}" name="birthday" class="form-control" required>
+                                </div>
+                                <div >
+                                    <label>住址：</label>
+                                    <div >
+                                        <select class="form-control col-lg-4" style="width: 155px" name="province" id="province" >
+                                            <option th:value="${province}" id="userProvince" th:text="${province}" ></option>
+                                            <!-- 利用js把省份添加到下拉列表里-->
+                                            <script type="text/javascript">
+                                                for(var i=0;i<provinceArr.length;i++)
+                                                {
+
+                                                    if (provinceArr[i]==$("#userProvince").val()){
+                                                        document.write("<option value='"+i+"' selected>"+provinceArr[i]+"</option>");
+                                                        document.getElementById("province").removeChild(document.getElementById("province").firstElementChild);
+
+                                                    }else {
+                                                        document.write("<option value='"+i+"'>"+provinceArr[i]+"</option>");
+                                                    }
+                                                }
+                                            </script>
+                                        </select>
+                                        <select class="form-control col-lg-3" style="width: 145px" name="city" id="city" >
+                                            <option th:value="${city}" id="userCity" th:text="${city}">城市</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label>邮箱：</label>
+                                    <span>[[${message}]]</span>
+                                    <input type="email" th:value="${user.mailbox}" name="mailbox" class="form-control" required>
+                                </div>
+                                    <hr/>
+                                <button  type="button" id="btn1"  class="btn btn-lg btn-primary btn-block">保存</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

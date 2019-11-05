@@ -1,7 +1,7 @@
 package com.java.csht.controller;
 
 import com.java.csht.model.User;
-import com.java.csht.service.UserServier;
+import com.java.csht.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class HomeController {
     @Autowired
-    UserServier userServier;
+    UserService userService;
 
 
     @RequestMapping("home")
@@ -32,7 +32,7 @@ public class HomeController {
         User user = new User();
         user.setUsername(username);
         user.setPsw(psw);
-        boolean resultStr = userServier.UserLogin(user, request);
+        boolean resultStr = userService.UserLogin(user, request);
 //        System.out.println(user1);
 //        System.o.println(userService.LoginUser(admin, psw, request));
 
