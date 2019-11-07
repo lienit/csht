@@ -24,6 +24,10 @@ public class User {
 
     private String photo;
 
+    private Boolean isAdmin;
+
+    private Boolean isLogin;
+
 
     public Integer getId() {
         return id;
@@ -105,6 +109,22 @@ public class User {
         this.photo = photo;
     }
 
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
+    public Boolean getLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(Boolean islogin) {
+        this.isLogin = islogin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -112,11 +132,14 @@ public class User {
                 ", username='" + username + '\'' +
                 ", psw='" + psw + '\'' +
                 ", realname='" + realname + '\'' +
-                ", sex='" + sex + '\'' +
+                ", sex=" + sex +
                 ", mobile='" + mobile + '\'' +
                 ", address='" + address + '\'' +
-                ", birthday=" + birthday +
+                ", birthday='" + birthday + '\'' +
                 ", mailbox='" + mailbox + '\'' +
+                ", photo='" + photo + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", isLogin=" + isLogin +
                 '}';
     }
 }

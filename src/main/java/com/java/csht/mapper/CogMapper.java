@@ -1,17 +1,17 @@
 package com.java.csht.mapper;
 
-import com.java.csht.model.Cog;
+import com.java.csht.model.Sort;
 
 public interface CogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Cog record);
+    int insert(Sort record);
 
-    int insertSelective(Cog record);
+    int insertSelective(Sort record);
 
-    Cog selectByPrimaryKey(Integer id);
+    Sort selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Cog record);
+    int updateByPrimaryKeySelective(Sort record);
 
-    int updateByPrimaryKey(Cog record);
+    int updateByPrimaryKey(Sort record);
 }

@@ -4,8 +4,373 @@
     <meta charset="UTF-8">
     <title>用户管理</title>
     <th:block th:include="/include/bootstrap :: head"></th:block>
+    <link rel="stylesheet" href="css/userInfo.css"/>
+
+    <script>
+        $(function () {
+            $("#search").click(function () {
+                var val = $("#isAdmin").val();
+                if (val!="") {
+                    if (val == "管理员") {
+                        val = true;
+                    } else {
+                        val = false;
+                    }
+                }
+                console.log(val);
+                var formData = new FormData();
+                formData.append("username",$("#firstname").val());
+                formData.append("Admin", val);
+                $.ajax({
+                    url:'/findByUserNameIsAdmin',
+                    type:"post",
+                    dataType:"json",
+                    data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success:function (result) {
+                        $("table tbody").html("");
+                        var array = new Array();
+                        result.forEach(function (itat ,index) {
+                            array[index] = new Array();
+                            array[index][0] = itat.id;
+                            array[index][1] = itat.username;
+                            if (itat.admin&&itat.id==1){
+                                itat.admin = "超级管理员"
+                            }else if (itat.admin){
+                                itat.admin = "管理员";
+                            }else {
+                                itat.admin = "用户";
+                            }
+                            array[index][2] = itat.admin;
+                            array[index][3] = itat.mobile;
+                            var tr= document.createElement("tr");
+                            var td = document.createElement("td");
+                            if (itat.id!=1){
+                                td.innerHTML = "<label class=\"checkbox-inline\" style=\"display:block\">\n" +
+                                    "                                                <input type=\"checkbox\" value='"+itat.id+"'>\n" +
+                                    "                                            </label>";
+                                td.style.textAlign = "center";
+                                td.style.width = "20px";
+
+                            }
+                            tr.append(td);
+                            for (var i = 0; i < array[index].length; i++){
+                                var td = document.createElement("td");
+                                td.innerText = array[index][i];
+                                tr.append(td);
+                                $("table tbody").append(tr);
+                            }
+
+
+                        })
+
+
+
+                    }
+                });
+            });
+            
+            //新增用户
+            $("#btnAdd").click(function () {
+                var val = $("select[name='isAdmin']").val();
+                if (val!=""){
+                    var isAdmin;
+                    if (val =="管理员"){
+                        isAdmin = true;
+                    }else if(val == "用户"){
+                        isAdmin = false;
+                    }
+                    console.log(isAdmin);
+                    var formData = new FormData();
+                    formData.append("username", $("input[name='username']").val());
+                    formData.append("Admin", isAdmin);
+                    formData.append("mobile", $("input[name='mobile']").val());
+                    $.ajax({
+                        url:'/adduser',
+                        type:"post",
+                        dataType:"text",
+                        data:formData,
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        success:function (result) {
+                            if (result=="success"){
+                                alert("添加成功！");
+                                window.location.reload();
+                                $("#btnAdd").attr("data-dismiss","model");
+                            }else {
+                                alert("用户名重复！");
+                            }
+                        }
+                    });
+                }else {
+                    alert("请选择用户角色！！！！")
+                }
+            });
+
+            //删除用户
+            $("#btnDele").click(function () {
+                var opt = "";
+                $("input[type='checkbox']:checked").each(function () {
+                    opt += $(this).val() + "," ;
+                });
+                var formData = new FormData();
+                formData.append("opt", opt);
+                console.log(opt);
+                $.ajax({
+                    url:'/deleuser',
+                    type:"post",
+                    dataType:"text",
+                    data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success:function (result) {
+                        if (result=="success"){
+                            alert("删除成功！");
+                            window.location.reload();
+                        }
+                    }
+                })
+            });
+
+            //重置用户密码
+            $("#btnReset").click(function () {
+                var opt = "";
+                $("input[type='checkbox']:checked").each(function () {
+                    opt += $(this).val() + "," ;
+                });
+                var formData = new FormData();
+                formData.append("opt", opt);
+                $.ajax({
+                    url:'/resetpsw',
+                    type:"post",
+                    dataType:"text",
+                    data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success:function (result) {
+                        if (result=="success"){
+                            alert("批量修改密码成功！初始密码为123456。");
+                            window.location.reload();
+                        }
+                    }
+                })
+            });
+            
+            $("#btnEdit").click(function () {
+                var id = new Array();
+                var num =0;
+                $("table tbody tr ").each(function (i) {
+
+                    $(this).children('td').each(function (j) {
+
+                        if (i!=0&&j==1){
+                            id[num] = $(this).text();
+                             num=num+1;
+                        }
+
+                        if (i!=0&&j==3&&$(this).html()==$(this).text()){
+                            var text = $(this).text();
+                            $(this).text("");
+                            if ($.trim(text)==$.trim("管理员")){
+                                $(this).html("<select class='form-control input-sm' name='editAdmin'> \n" +
+                                    "            <option selected>管理员</option>\n" +
+                                    "            <option>用户</option>\n" +
+                                    "         </select>");
+
+                            }else {
+                                $(this).html("<select class='form-control input-sm' name='editAdmin'> \n" +
+                                    "                                            <option >管理员</option>\n" +
+                                    "                                            <option selected>用户</option>\n" +
+                                    "                                        </select>");
+                            }
+
+                        }
+
+                    });
+
+                })
+                $("#notarize").html("<button type=\"button\" id='btnNotarize' style=\"float: right\" class=\"btn btn-default\">确认修改</button>");
+
+
+                $("#btnNotarize").click(function () {
+                    var isadmin = new Array();
+                    $("select[name=editAdmin]").each(function (i) {
+                        isadmin[i] = $(this).val();
+                    })
+                    console.log(id);
+                    var formData = new FormData();
+                    formData.append("id", id);
+                    formData.append("isadmin", isadmin);
+                    $.ajax({
+                        url:'/updaterole',
+                        type:"post",
+                        dataType:"text",
+                        data:formData,
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        success:function (result) {
+                            if (result=="success"){
+                                alert("修改成功！");
+                                window.location.reload();
+                            }
+                        }
+                    })
+                });
+            });
+
+
+        })
+    </script>
 </head>
 <body>
+    <th:block th:replace="/include/backManage :: nav-head"></th:block>
+    <th:block th:replace="/include/backManage :: backManage-menu"></th:block>
 
+    <div class="col-xs-12 col-sm-8 " >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                用户管理
+            </div>
+            <div class="panel-body" >
+                <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+                    <div class="row placeholders" >
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group" style="margin-left: -70px">
+                                    <label for="firstname" class="col-sm-2 control-label">用户名：</label>
+                                    <div class="col-sm-6" style="width: 150px;margin-left: -20px">
+                                        <input type="text" class="form-control" id="firstname" placeholder="请输入用户名">
+                                    </div>
+                                    <label  class="col-sm-2 control-label">角色：</label>
+                                    <div class="col-sm-10" style="width: 150px;margin-left: -30px">
+                                        <select class="form-control input-sm" id="isAdmin">
+                                            <option></option>
+                                            <option>管理员</option>
+                                            <option>用户</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" id="search" class="btn btn-default ">搜索</button>
+                                </div>
+                                <div class="btn-group" style="margin-bottom: 20px">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalAdd">
+                                        <span class="glyphicon glyphicon-plus" style="color: rgb(0, 0, 0);"></span>
+                                        添加
+                                    </button>
+                                    <button type="button" id="btnDele" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-remove" style="color: rgb(0, 0, 0);"></span>
+                                        删除
+                                    </button>
+                                    <button type="button" id="btnReset" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-cog" style="color: rgb(0, 0, 0);"></span>
+                                        重置密码
+                                    </button>
+                                    <button type="button" id="btnEdit" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-edit" style="color: rgb(0, 0, 0);"></span>
+                                        修改
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>
+                                    </th>
+                                    <th>用户Id</th>
+                                    <th>用户名</th>
+                                    <th>角色</th>
+                                    <th>联系电话</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="user:${userList}">
+                                        <td th:if="${user.id}!=1" style="text-align:center;width: 20px">
+                                            <label class="checkbox-inline" style="display:block">
+                                                <input type="checkbox" th:value="${user.id}">
+                                            </label>
+                                        </td>
+                                        <td th:if="${user.id}==1"></td>
+                                        <td>[[${user.id}]]</td>
+                                        <td>[[${user.username}]]</td>
+                                        <td th:if="${user.Admin} and ${user.id}==1">
+                                            超级管理员
+                                        </td>
+                                        <td th:if="${user.Admin} and ${user.id}!=1">
+                                            管理员
+                                        </td>
+                                        <td th:if="!${user.Admin}">
+                                            用户
+                                        </td>
+                                        <td>[[${user.mobile}]]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="notarize">
+
+                    </div>
+
+                    <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        新增用户
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/">
+                                        <div class="form-group" style="width: 300px;margin-left: 150px">
+                                            <label class="control-label">用户名：</label>
+                                            <input type="text" class="form-control" name="username" required>
+                                        </div>
+                                        <div class="form-group" style="width: 300px;margin-left: 150px">
+                                            <label class="control-label">角色：</label>
+                                            <select class="form-control input-sm" name="isAdmin">
+                                                <option></option>
+                                                <option>管理员</option>
+                                                <option>用户</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="width: 300px;margin-left: 150px">
+                                            <label class="control-label">联系电话：</label>
+                                            <input type="text" class="form-control" name="mobile" required>
+                                        </div>
+                                        <div class="input-group" style="width: 300px;margin-left: 150px">
+                                            <label class="control-label">验证码</label>
+                                            <input type="text" name="verify" id="verify1" class="form-control"  placeholder="请输入验证码" required>
+                                            <span class="input-group-btn">
+						                        <button class="btn btn-info"  style="margin-top: 25px" type="button">
+							                    验证码
+                                                </button>
+                                            </span>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="btnAdd" >
+                                        提交更改
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

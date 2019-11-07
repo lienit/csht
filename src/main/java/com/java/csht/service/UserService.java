@@ -13,6 +13,11 @@ public class UserService {
     @Autowired
     public UserMapper userMapper;
 
+    public List<User> findByUserNameIsAdmin(User user){
+        List<User> byUserNameIsAdmin = userMapper.findByUserNameIsAdmin(user);
+        return byUserNameIsAdmin;
+    }
+
     public Boolean UserLogin(User user, HttpServletRequest request){
         List<User> users = userMapper.LoginUser(user);
         String username = "";
@@ -25,6 +30,11 @@ public class UserService {
             request.getServletContext().setAttribute("username", username);
         }
         return resultStr;
+    }
+
+    public List<User> findAll(){
+        List<User> all = userMapper.findAll();
+        return all;
     }
 
     public User findByUserName(String username){
@@ -50,6 +60,26 @@ public class UserService {
     public Boolean UpdateByUserName(User user){
         boolean b = userMapper.updatetByUserName(user);
         return b;
+    }
+
+    public Boolean UpdatePswById(String id, String psw){
+        boolean b = userMapper.updatePswById(id, psw);
+        return b;
+    }
+
+    public Boolean UpdateIsAdminById(String id,Boolean isAdmin){
+        boolean b = userMapper.updateIsAdminById(id, isAdmin);
+        return b;
+    }
+
+    public Boolean insertUser(User user){
+        Boolean aBoolean = userMapper.insertUser(user);
+        return aBoolean;
+    }
+
+    public Boolean deleteUser(String id){
+        Boolean aBoolean = userMapper.deleteUser(id);
+        return aBoolean;
     }
 
 }

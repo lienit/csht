@@ -1,6 +1,6 @@
 package com.java.csht.model;
 
-public class Cog {
+public class Sort {
     private Integer id;
 
     private String cname;

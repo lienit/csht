@@ -1,4 +1,4 @@
-package com.java.csht.controller;
+package com.java.csht.controller.UserInfo;
 
 import com.java.csht.model.User;
 import com.java.csht.service.UserService;
@@ -72,7 +72,7 @@ public class UserInfoController {
 
         System.out.println();
         modelAndView.addObject("state", state);
-        modelAndView.addObject("userId", id);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
     @PostMapping("/bindnewmobile")

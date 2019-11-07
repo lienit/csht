@@ -2,6 +2,72 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="nav-head">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                <span class="glyphicon glyphicon-list" style="color: gray;"> </span>
+            </a>
+            <a class="navbar-brand" href="#">校易网</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="row row-offcanvas row-offcanvas-right" th:fragment="backManage-menu">
+    <div class="col-xs-5 col-sm-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+            <ul class="nav nav-sidebar">
+                <li >
+                    <span  class="list-group-item active">后台管理</span>
+                </li>
+                <li style="margin-top: 10px">
+                    <a th:href="@{/usermanage}" class="accordion-toggle ">
+                        <span class="glyphicon glyphicon-user" style="color: rgb(0, 193, 255);"></span>
+                        &nbsp;
+                        用户管理
+                    </a>
+                </li>
+                <li style="margin-top: 10px">
+                    <a class="accordion-toggle">
+                        <span class="glyphicon glyphicon-stats" style="color: rgb(0, 193, 255);"> </span>
+                        &nbsp;
+                        首页管理
+                    </a>
+                </li>
+                <li style="margin-top: 10px">
+                    <a th:href="@{/sortManage}" class="accordion-toggle">
+                        <span class="glyphicon glyphicon-th-list" style="color: rgb(0, 193, 255);"> </span>
+                        &nbsp;
+                        类别管理
+                    </a>
+                </li>
+                <li style="margin-top: 10px">
+                    <a class="accordion-toggle">
+                        <span class="glyphicon glyphicon-euro" style="color: rgb(0, 193, 255);"> </span>
+                        &nbsp;
+                        出售管理
+                    </a>
+                </li>
+                <li style="margin-top: 10px">
+                    <a class="accordion-toggle">
+                        <span class="glyphicon glyphicon-gift" style="color: rgb(0, 193, 255);"> </span>
+                        &nbsp;
+                        求购管理
+                    </a>
+                </li>
+                <li style="margin-top: 10px">
+                    <a class="accordion-toggle">
+                        <span class="glyphicon glyphicon-off" style="color: rgb(0, 193, 255);"> </span>
+                        &nbsp;
+                        退出登录
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div><!--/.sidebar-offcanvas-->
+
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.java.csht.controller;
+package com.java.csht.controller.UserInfo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

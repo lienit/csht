@@ -5,5 +5,22 @@
   <sql id="Base_Column_List">
     id, userName, psw, realName, sex, mobile, address, birthday, mailbox
   </sql>
+  <select id="findByUserNameIsAdmin" parameterType="com.java.csht.model.User" resultType="com.java.csht.model.User">
+        select * from user
+        <where>
+          <if test="username != null and username != ''">
+            and userName like concat('%',#{username}, '%')
+          </if>
+          <if test="isAdmin != null">
+            and isAdmin = #{isAdmin};
 
+          </if>
+
+        </where>
+      <if test="isAdmin == null">
+          order by isAdmin desc;
+      </if>
+
+
+  </select>
 </mapper>

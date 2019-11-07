@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>类别管理</title>
+    <th:block th:include="/include/bootstrap :: head"></th:block>
+    <link rel="stylesheet" href="css/userInfo.css"/>
+</head>
+<body>
+    <th:block th:replace="/include/backManage :: nav-head"></th:block>
+    <th:block th:replace="/include/backManage :: backManage-menu"></th:block>
+    <div class="col-xs-12 col-sm-8 " >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                类别管理
+            </div>
+            <div class="panel-body" >
+                <div class="col-sm-8 col-sm-offset-6 col-md-9 col-md-offset-1 main"  >
+                    <div class="row placeholders" >
+                        <div class="btn-group" style="margin-bottom: 20px">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalAdd">
+                                <span class="glyphicon glyphicon-plus" style="color: rgb(0, 0, 0);"></span>
+                                添加
+                            </button>
+                            <button type="button" id="btnDele" class="btn btn-default">
+                                <span class="glyphicon glyphicon-remove" style="color: rgb(0, 0, 0);"></span>
+                                删除
+                            </button>
+                            <button type="button" id="btnEdit" class="btn btn-default">
+                                <span class="glyphicon glyphicon-edit" style="color: rgb(0, 0, 0);"></span>
+                                修改
+                            </button>
+                        </div>
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>
+                                    </th>
+                                    <th>Id</th>
+                                    <th>类别名</th>
+                                    <th>数量</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
