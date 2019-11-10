@@ -1,17 +1,29 @@
 package com.java.csht.mapper;
 
 import com.java.csht.model.Sell;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Mapper
+@Repository
+@Transactional(rollbackFor = Exception.class)
 public interface SellMapper {
-    int deleteByPrimaryKey(Integer sid);
+    public List<Sell> findAll();
 
-    int insert(Sell record);
+    public List<Sell> BackManagefind(String userName,String sName,Float minPrice, Float maxPrice,Integer sortId);
 
-    int insertSelective(Sell record);
+    @Delete("delete from sell where sid = #{id}")
+    public Boolean deleteSell(String id);
 
-    Sell selectByPrimaryKey(Integer sid);
+    @Update("update sell set sName=#{sellName},sortId=#{sortId} where sid = #{id}")
+    public Boolean updateSell(String id, String sellName,Integer sortId);
 
-    int updateByPrimaryKeySelective(Sell record);
+    @Update("update sell set sortName = #{sortName} where sid= #{id}")
+    public Boolean updateSortName(String sortName,Integer id);
 
-    int updateByPrimaryKey(Sell record);
 }

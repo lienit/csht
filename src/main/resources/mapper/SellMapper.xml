@@ -1,9 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.csht.mapper.SellMapper">
-
-  <sql id="Base_Column_List">
-    sId, sName, sPrice, sSellPrice, cog, sDep, sMobile
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.csht.mapper.SellMapper" >
+  <resultMap id="BaseResultMap" type="com.java.csht.model.Sell" >
+    <id column="sId" property="sid" jdbcType="INTEGER" />
+    <result column="sName" property="sname" jdbcType="VARCHAR" />
+    <result column="sPrice" property="sprice" jdbcType="REAL" />
+    <result column="sSellPrice" property="ssellprice" jdbcType="REAL" />
+    <result column="sortId" property="sortid" jdbcType="INTEGER" />
+    <result column="sDep" property="sdep" jdbcType="VARCHAR" />
+    <result column="sMobile" property="smobile" jdbcType="CHAR" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="sortName" property="sortname" jdbcType="VARCHAR" />
+    <association property="user" javaType="com.java.csht.model.User">
+      <id column="id" property="id"/>
+      <result property="username" column="userName"/>
+      <result property="psw" column="psw"/>
+      <result property="realname" column="realName"/>
+      <result property="sex" column="sex"/>
+      <result property="mobile" column="mobile"/>
+      <result property="address" column="address"/>
+      <result property="birthday" column="birthday"/>
+      <result property="mailbox" column="mailbox"/>
+      <result property="photo" column="photo"/>
+      <result property="isAdmin" column="isAdmin"/>
+      <result property="isLogin" column="isLogin"/>
+    </association>
+    <association property="sort" javaType="com.java.csht.model.Sort">
+      <id property="id" column="id" />
+      <result property="cname" column="cName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sId, sName, sPrice, sSellPrice, sortId, sDep, sMobile, userId, userName, sortName
   </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT *  FROM sell se ,user ue,sort sor WHERE sor.id=se.sortid AND ue.id= se.userid  ORDER BY se.sid
+  </select>
 
+  <select id="BackManagefind"  resultMap="BaseResultMap">
+    select * from sell
+    <where>
+              <if test="userName !=null and userName!=''">
+
+                and userName like  CONCAT('%',#{userName}, '%')
+              </if>
+            <if test="sName !=null and sName != ''">
+              and sName like CONCAT('%',#{sName}, '%')
+            </if>
+            <if test="minPrice != 0.0f and minPrice != null">
+                  and sSellPrice &gt;= #{minPrice}
+            </if>
+            <if test="maxPrice != 0.0f and maxPrice != null">
+              and sSellPrice &lt;= #{maxPrice}
+            </if>
+            <if test="sortId != 0 and sortId != null">
+              and  sortId = #{sortId}
+            </if>
+
+    </where>
+  </select>
 </mapper>

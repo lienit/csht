@@ -1,17 +1,28 @@
 package com.java.csht.mapper;
 
 import com.java.csht.model.AskBuy;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Mapper
+@Repository
+@Transactional(rollbackFor = Exception.class)
 public interface AskBuyMapper {
-    int deleteByPrimaryKey(Integer aid);
+    public List<AskBuy> findAll();
 
-    int insert(AskBuy record);
+    public List<AskBuy> search(String userName, String aName, Integer sortId);
 
-    int insertSelective(AskBuy record);
+    @Update("update askbuy set sortName = #{sortName} where aid = #{id}")
+    public Boolean updateSortName(String sortName,Integer id);
 
-    AskBuy selectByPrimaryKey(Integer aid);
+    @Delete("delete from askbuy where aid = #{id} ")
+    public Boolean deleteAskBuy(String id);
 
-    int updateByPrimaryKeySelective(AskBuy record);
-
-    int updateByPrimaryKey(AskBuy record);
+    @Update("update askBuy set aName = #{aName},sortId = #{sortId} where aid = #{id}")
+    public Boolean updateAskBuy(String id, String aName,Integer sortId);
 }

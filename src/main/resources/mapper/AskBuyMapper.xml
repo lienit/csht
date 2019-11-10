@@ -1,9 +1,55 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.csht.mapper.AskBuyMapper">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.csht.mapper.AskBuyMapper" >
+  <resultMap id="BaseResultMap" type="com.java.csht.model.AskBuy" >
+    <id column="aId" property="aid" jdbcType="INTEGER" />
+    <result column="aName" property="aname" jdbcType="VARCHAR" />
+    <result column="aMobile" property="amobile" jdbcType="CHAR" />
+    <result column="sortId" property="sortid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="sortName" property="sortname" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
 
-  <sql id="Base_Column_List">
-    aId, aName, aPrice, aMobile
+    <association property="user" javaType="com.java.csht.model.User">
+      <id column="id" property="id"/>
+      <result property="username" column="userName"/>
+      <result property="psw" column="psw"/>
+      <result property="realname" column="realName"/>
+      <result property="sex" column="sex"/>
+      <result property="mobile" column="mobile"/>
+      <result property="address" column="address"/>
+      <result property="birthday" column="birthday"/>
+      <result property="mailbox" column="mailbox"/>
+      <result property="photo" column="photo"/>
+      <result property="isAdmin" column="isAdmin"/>
+      <result property="isLogin" column="isLogin"/>
+    </association>
+    <association property="sort" javaType="com.java.csht.model.Sort">
+      <id property="id" column="id" />
+      <result property="cname" column="cName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    aId, aName, aMobile, sortId, userId, sortName, userName
   </sql>
 
+  <select id="findAll" resultMap="BaseResultMap">
+
+    SELECT * FROM askbuy ,user ue  ,sort so   where so.id=askbuy.sortId and ue.id=askbuy.userId   ORDER BY askbuy.aId
+  </select>
+  
+  <select id="search" resultType="com.java.csht.model.AskBuy">
+    select * from askbuy
+    <where>
+      <if test="userName!=null and userName!=''">
+        and userName like CONCAT('%',#{userName}, '%')
+      </if>
+      <if test="aName != null and aName != ''">
+        and aName like CONCAT('%',#{aName},'%')
+      </if>
+      <if test="sortId != 0 and sortId != null">
+        and  sortId = #{sortId}
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -5,6 +5,120 @@
     <title>类别管理</title>
     <th:block th:include="/include/bootstrap :: head"></th:block>
     <link rel="stylesheet" href="css/userInfo.css"/>
+    <script>
+        $(function () {
+            //新增类别
+            $("#btnAdd").click(function () {
+                var formData = new FormData();
+                formData.append("cname",$("input[name=sortName]").val());
+                console.log($("input[name=sortName]").val());
+                $.ajax({
+                    url:'/addsort',
+                    type:'POST',
+                    dataType:'text',
+                    data:formData,
+                    contentType: false,
+                    processData: false,
+                    success:function (result) {
+                        if (result=="sueecss"){
+                            alert("添加成功！");
+                            window.location.reload();
+                            $("#btnAdd").attr("data-dismiss","model");
+                        }else if (result=="error"){
+                            alert("用户名重复！");
+                        }else if (result=="fault"){
+                            alert("添加失败！");
+                        }
+                    }
+                })
+            })
+
+            //删除类别
+            $("#btnDele").click(function () {
+                var opt = "";
+                $("input[type='checkbox']:checked").each(function () {
+                    opt += $(this).val() + "," ;
+                });
+                var formData = new FormData();
+                formData.append("opt", opt);
+                if (opt!=""){
+                    $.ajax({
+                        url:'/delesort',
+                        type:'POST',
+                        dataType:'text',
+                        data:formData,
+                        contentType: false,
+                        processData: false,
+                        success:function (result) {
+                            if (result=="sueecss"){
+                                alert("删除成功！");
+                                window.location.reload();
+                            }else {
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#btnEdit").click(function () {
+                var id = "";
+                var rawcName = new Array();
+
+                $("input[type='checkbox']").each(function () {
+                    id += $(this).val() + "," ;
+                });
+
+                $("table tbody tr ").each(function (i) {
+
+                    $(this).children('td').each(function (j) {
+
+
+
+                        if (j==2&&$(this).html()==$(this).text()){
+                            var text = $(this).text();
+                            rawcName[i]=text;
+                            $(this).text("");
+                            $(this).html("<input type='text' name='SortName' value="+text+">");
+                        }
+                    });
+                })
+
+
+                $("#notarize").html("<button type=\"button\" id='btnNotarize' style=\"float: right\" class=\"btn btn-default\">确认修改</button>");
+
+
+
+                $("#btnNotarize").click(function () {
+                    var sortName = new Array();
+                    $("input[name=SortName]").each(function (i) {
+                        sortName[i] = $(this).val();
+                    })
+                    console.log(sortName);
+                    var formData = new FormData();
+                    formData.append("id", id);
+                    formData.append("rawcName", rawcName);
+                    formData.append("cname", sortName);
+                    $.ajax({
+                        url:'/updatesortname',
+                        type:"post",
+                        dataType:"text",
+                        data:formData,
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        success:function (massage) {
+                            if (massage=="success"){
+                                alert("修改成功！");
+                                window.location.reload();
+                            }else {
+                                alert(massage+"类别名重复！")
+                            }
+                        }
+                    })
+                });
+            });
+        })
+    </script>
 </head>
 <body>
     <th:block th:replace="/include/backManage :: nav-head"></th:block>
@@ -37,16 +151,57 @@
                                 <tr>
                                     <th>
                                     </th>
-                                    <th>Id</th>
+                                    <th>序号</th>
                                     <th>类别名</th>
-                                    <th>数量</th>
+                                    <th>商品数量</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="sort,stat:${SortList}">
+                                    <td style="text-align:center;width: 20px">
+                                        <label class="checkbox-inline" style="display:block">
+                                            <input type="checkbox" th:value="${sort.id}">
+                                        </label>
+                                    </td>
+                                    <td>[[${stat.count}]]</td>
+                                    <td>[[${sort.cname}]]</td>
+                                    <td>[[${sort.number}]]</td>
                                 </tr>
                             </table>
                         </div>
+
+                        <div id="notarize">
+
+                        </div>
+
+                        <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            新增类别
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/">
+                                            <div class="form-group" style="width: 300px;margin-left: 150px">
+                                                <label class="control-label">类别名</label>
+                                                <input type="text" class="form-control" name="sortName" required>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="btnAdd" >
+                                            提交
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
                     </div>
                     </div>
                 </div>
